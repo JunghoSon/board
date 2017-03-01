@@ -2,13 +2,13 @@ import Board from '../../models/Board';
 
 exports.create = (req, res) => {
     const { title, author, content } = req.body;
-    
+
     const respond = () => {
         res.json({
             success: true
         });
     };
-    
+
     const onError = (err) => {
         res.status(409).json({
             success: false,
@@ -16,61 +16,36 @@ exports.create = (req, res) => {
             message: err.message
         });
     }
-    
+
     Board.create(title, author, content)
          .then(respond)
          .catch(onError);
 };
 
 exports.list = (req, res) => {
-    const { page } = req.params.page;
-    
-    const count = () => {
-        return Board.count({}).exec();
-    };
-    
+    const page = (typeof req.params.page === 'undefined') ? 1 : parseInt(req.params.page, 10);
+    const query = req.query;
+
+    let pagenation = null;
+
     const getPagenation = (total) => {
-        let targetPage = page;
-        targetPage = (typeof targetPage === 'undefined') ? 0 : parseInt(targetPage, 10);
-        
-        let pObj = {};
-        let size = 10;
-        let pageSize = 5;
-        
-        console.log(targetPage);
-        
-        let startBoard = (targetPage - 1) * size;
-        let totalPage = Math.ceil(total / size);
-        let startPage = (Math.floor((targetPage - 1) / pageSize) * pageSize) + 1;
-        let endPage = startPage + (pageSize - 1);
-        
-        if(endPage > totalPage) endPage = totalPage;
-        
-        let prevPage = (targetPage < pageSize) ? -1 : startPage - pageSize;
-        let nextPage = (endPage === totalPage) ? -1 : endPage + 1;
-        
-        pObj.targetPage = targetPage;
-        pObj.startBoard = startBoard;
-        pObj.startPage = startPage;
-        pObj.endPage = endPage;
-        pObj.prevPage = prevPage;
-        pObj.nextPage = nextPage;
-        pObj.size = size;
-        
-        return {
-            pagenation: pObj
-        };
+        pagenation = Board.getPagenation(page, total);
+
+        return Promise.resolve(false);
     };
-    
-    const getList = (obj) => {
-        return Board.getList(obj);
+
+    const getList = () => {
+        return Board.getList(query, pagenation);
     };
-    
-    const respond = (obj) => {
-        obj.success = true;
-        res.json(obj);
+
+    const respond = (boards) => {
+        res.json({
+            boards: boards,
+            pagenation: pagenation,
+            success: true
+        });
     };
-    
+
     const onError = (err) => {
         res.status(409).json({
             success: false,
@@ -78,8 +53,8 @@ exports.list = (req, res) => {
             message: err.message
         });
     };
-    
-    Board.getTotal()
+
+    Board.getTotal(query)
          .then(getPagenation)
          .then(getList)
          .then(respond)
@@ -93,7 +68,9 @@ exports.dummy = (req, res) => {
             content: "dummy content no " + i,
             author: "dummy author no " + i
         });
-        
-        board.save();
+
+        board.save((err, dummys) => {
+            if(err) throw err;
+        });
     }
 };
