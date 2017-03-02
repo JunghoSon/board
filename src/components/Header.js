@@ -7,7 +7,7 @@ class Header extends Component {
             <div>
                 <h1>TEST BOARD</h1>
                 <Link to="/">Home</Link>
-                <Link to="/board">Board</Link>
+                <Link to="/board/1">Board</Link>
             </div>
         );
     }
