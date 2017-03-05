@@ -4,10 +4,14 @@ import { Link } from 'react-router';
 class Header extends Component {
     render(){
         return (
-            <div>
-                <h1>TEST BOARD</h1>
-                <Link to="/">Home</Link>
-                <Link to="/board/1">Board</Link>
+            <div className="wrp_header">
+                <div className="header">
+                    <h1>TEST BOARD</h1>
+                    <ul className="gnb">
+                        <li><Link to="/">Home</Link></li>
+                        <li><Link to="/board">Board</Link></li>
+                    </ul>
+                </div>
             </div>
         );
     }

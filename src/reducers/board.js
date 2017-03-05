@@ -4,7 +4,8 @@ import update from 'react-addons-update';
 const initialState = {
     list: {
         status: '',
-        items: []
+        items: [],
+        pagenation: {}
     }
 };
 
@@ -20,7 +21,8 @@ export default function board(state = initialState, action){
             return update(state, {
                 list: {
                     status: {$set: 'SUCCESS'},
-                    items: {$set: action.items}
+                    items: {$set: action.items},
+                    pagenation: {$set: action.pagenation}
                 }
             });
         case types.BOARD_LIST_FAILURE:

@@ -8,13 +8,10 @@ import axios from 'axios';
 export function boardListRequest(page){
     return (dispatch) => {
         dispatch(boardList());
-        
-        console.log(page);
-        
+
         return axios.get('/api/board/' + page)
                     .then((response) => {
-                        console.log(response);
-                        dispatch(boardListSuccess(response.data.boards));
+                        dispatch(boardListSuccess(response.data));
                     })
                     .catch((error) => {
                         dispatch(boardListFailure(error));
@@ -28,10 +25,11 @@ export function boardList(){
     };
 }
 
-export function boardListSuccess(list){
+export function boardListSuccess(data){
     return {
         type: BOARD_LIST_SUCCESS,
-        items: list
+        items: data.boards,
+        pagenation: data.pagenation
     };
 }
 

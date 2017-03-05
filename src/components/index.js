@@ -1,7 +1,11 @@
 import Header from './Header';
-import ListTable from './ListTable';
+import Tbl from './Tbl';
+import TblRow from './ListRow';
+import Pagenation from './Pagenation';
 
 export {
     Header,
-    ListTable
+    Tbl,
+    TblRow,
+    Pagenation
 };

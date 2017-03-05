@@ -16,6 +16,7 @@ ReactDOM.render(
             <Route path="/" component={App}>
                 <IndexRoute component={Home}/>
                 <Route path="board" component={Board}>
+                    <IndexRoute component={List}/>
                     <Route path=":page" component={List}/>
                 </Route>
             </Route>
