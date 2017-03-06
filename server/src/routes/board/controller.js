@@ -61,16 +61,8 @@ exports.list = (req, res) => {
          .catch(onError);
 };
 
-exports.dummy = (req, res) => {
-    for(let i=0; i<124; i++){
-        let board = new Board({
-            title: "dummy title no " + i,
-            content: "dummy content no " + i,
-            author: "dummy author no " + i
-        });
-
-        board.save((err, dummys) => {
-            if(err) throw err;
-        });
-    }
-};
+exports.detail = (req, res) => {
+    res.json({
+        success: true
+    });
+}

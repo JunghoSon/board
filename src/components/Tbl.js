@@ -20,15 +20,16 @@ class Tbl extends Component {
     render(){
         let mapToItems = (items) => {
             return items.map((item, i) => {
-                let { title, author, content, date, num } = item;
+                let { title, author, date, num, _id } = item;
 
                 return (
                     <TblRow title={title}
                              author={author}
-                             content={content}
                              date={date}
                              num={num}
-                             key={i}/>
+                             id={_id}
+                             key={_id}
+                             index={i}/>
                 );
             });
         };

@@ -17,7 +17,7 @@ export function boardListRequest(page){
                         dispatch(boardListSuccess(response.data));
                     })
                     .catch((error) => {
-                        dispatch(boardListFailure(error));
+                        dispatch(boardListFailure(error.response.data));
                     });
     };
 }

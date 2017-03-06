@@ -1,4 +1,5 @@
 import React, { Component } from 'react';
+import { Link } from 'react-router';
 
 class TblRow extends Component {
     render(){
@@ -18,10 +19,14 @@ class TblRow extends Component {
         
         let resultDate = `${year}/${month}/${day} ${hour}:${min}:${sec}`;
         
+        let link = (
+            <Link to={`/board/detail/${this.props.id}`}>{ this.props.title }</Link>
+        );
+        
         return (
             <tr>
                 <td>{ this.props.num }</td>
-                <td className="tit">{ this.props.title }</td>
+                <td className="tit">{ link }</td>
                 <td>{ this.props.author }</td>
                 <td>{ resultDate }</td>
             </tr>
@@ -32,17 +37,19 @@ class TblRow extends Component {
 TblRow.propTypes = {
     title: React.PropTypes.string,
     author: React.PropTypes.string,
-    content: React.PropTypes.string,
     date: React.PropTypes.string,
-    num: React.PropTypes.number
+    num: React.PropTypes.number,
+    id: React.PropTypes.string,
+    index: React.PropTypes.number
 };
 
 TblRow.defaultProps = {
     title: '',
     author: '',
-    content: '',
     date: '',
-    number: 0
+    num: 0,
+    id: '',
+    index: 0
 };
 
 export default TblRow;

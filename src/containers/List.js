@@ -2,15 +2,22 @@ import React, { Component } from 'react';
 import { Tbl, Pagenation } from 'components';
 import { connect } from 'react-redux';
 import { boardListRequest } from 'actions/board';
-import { Link } from 'react-router';
+import { Link, browserHistory } from 'react-router';
 
 class List extends Component {
     constructor(props){
-        super(props)
+        super(props);
     }
     
     componentDidMount(){
-        this.props.boardListRequest(this.props.params.page);
+        this.props.boardListRequest(this.props.params.page)
+            .then(() => {
+                
+            })
+            .catch((err) => {
+                console.log(err);
+                browserHistory.push('/err');
+            });
     }
 
     componentWillReceiveProps(nextProps){

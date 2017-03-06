@@ -5,7 +5,7 @@ import { Provider } from 'react-redux';
 import { createStore, applyMiddleware } from 'redux';
 import reducers from 'reducers';
 import thunk from 'redux-thunk';
-import { App, Home, Board, List, Write } from 'containers';
+import { App, Home, Board, List, Write, Err } from 'containers';
 
 const store = createStore(reducers, applyMiddleware(thunk));
 const rootElement = document.getElementById('root');
@@ -22,6 +22,7 @@ ReactDOM.render(
                     </Route>
                     <Route path="write" component={Write}/>
                 </Route>
+                <Route path="err" component={Err}/>
             </Route>
         </Router>
     </Provider>, rootElement);

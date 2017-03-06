@@ -5,7 +5,8 @@ const initialState = {
     list: {
         status: '',
         items: [],
-        pagenation: {}
+        pagenation: {},
+        error: {}
     },
     write: {
         status: ''
