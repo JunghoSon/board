@@ -2,6 +2,21 @@ import React, { Component } from 'react';
 import { TblRow } from 'components';
 
 class Tbl extends Component {
+    shouldComponentUpdate(nextProps, nextState){
+        let current = {
+            props: this.props,
+            state: this.state
+        };
+        
+        let next = {
+            props: nextProps,
+            state: nextState
+        };
+        
+        let update = JSON.stringify(current) !== JSON.stringify(next);
+        return update;
+    }
+    
     render(){
         let mapToItems = (items) => {
             return items.map((item, i) => {
@@ -22,10 +37,10 @@ class Tbl extends Component {
             <table className="bbs1">
                 <caption>테스트보드</caption>
                 <colgroup>
-                    <col width="10%" />
+                    <col width="7%" />
                     <col width="*" />
-                    <col width="15%" />
-                    <col width="15%" />
+                    <col width="20%" />
+                    <col width="20%" />
                 </colgroup>
                 <thead>
                     <tr>

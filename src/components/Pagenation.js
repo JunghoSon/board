@@ -6,17 +6,17 @@ class Pagenation extends Component {
         let { prev, next, current, pages } = this.props;
 
         let prevBtn = (
-            <Link to={`/board/${prev}`}>prev</Link>
+            <Link to={`/board/list/${prev}`}>prev</Link>
         );
 
         let nextBtn = (
-            <Link to={`/board/${next}`}>next</Link>
+            <Link to={`/board/list/${next}`}>next</Link>
         );
 
         let mapToPages = (pages) => {
             return pages.map((page, i) => {
                 return (
-                    <Link to={`/board/${page}`} className={(page === current)? 'on' : undefined} key={i}>{page}</Link>
+                    <Link to={`/board/list/${page}`} className={(page === current)? 'on' : undefined} key={i}>{page}</Link>
                 );
             });
         };

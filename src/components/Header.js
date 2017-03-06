@@ -9,7 +9,7 @@ class Header extends Component {
                     <h1>TEST BOARD</h1>
                     <ul className="gnb">
                         <li><Link to="/">Home</Link></li>
-                        <li><Link to="/board">Board</Link></li>
+                        <li><Link to="/board/list">Board</Link></li>
                     </ul>
                 </div>
             </div>

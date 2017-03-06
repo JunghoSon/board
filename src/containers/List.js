@@ -4,6 +4,10 @@ import { connect } from 'react-redux';
 import { boardListRequest } from 'actions/board';
 
 class List extends Component {
+    constructor(props){
+        super(props)
+    }
+    
     componentDidMount(){
         this.props.boardListRequest(this.props.params.page);
     }
@@ -12,6 +16,11 @@ class List extends Component {
         if(this.props.params.page !== nextProps.params.page){
             this.props.boardListRequest(nextProps.params.page);
         }
+    }
+    
+    shouldComponentUpdate(nextProps, nextState){
+        let update = JSON.stringify(this.props.listItems) !== JSON.stringify(nextProps.listItems);
+        return update;    
     }
 
     render(){
