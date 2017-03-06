@@ -2,6 +2,7 @@ import React, { Component } from 'react';
 import { Tbl, Pagenation } from 'components';
 import { connect } from 'react-redux';
 import { boardListRequest } from 'actions/board';
+import { Link } from 'react-router';
 
 class List extends Component {
     constructor(props){
@@ -26,7 +27,9 @@ class List extends Component {
     render(){
         return (
             <div>
+                <h3>리스트</h3>
                 <Tbl items={this.props.listItems}/>
+                <p className="wrp_btn_r"><Link to="/board/write" className="btn">글쓰기</Link></p>
                 <Pagenation prev={this.props.pagenation.prevPage}
                             next={this.props.pagenation.nextPage}
                             current={this.props.pagenation.current}

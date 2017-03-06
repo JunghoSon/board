@@ -3,10 +3,10 @@ import controller from './controller';
 
 const router = express.Router();
 
-router.post('/', controller.create);
+router.post('/write', controller.create);
 
-router.get('/', controller.list);
-router.get('/:page', controller.list);
+router.get('/list', controller.list);
+router.get('/list/:page', controller.list);
 
 router.post('/dummy', controller.dummy);
 

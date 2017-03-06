@@ -13,7 +13,6 @@ i,em,address{font-style:normal}
 label,button{cursor:pointer}
 button{margin:0;padding:0}
 a{color:#222;text-decoration:none}
-a:hover{color:#390;text-decoration:underline}
 button *{position:relative}
 button img{left:-3px;*left:auto}
 html:first-child select{height:20px;padding-right:6px}
@@ -22,6 +21,8 @@ hr{display:none}
 legend{*width:0}
 table{border-collapse:collapse;border-spacing:0}
 input::-ms-clear{display:none}
+
+.blind, legend{display:block;overflow:hidden;position:absolute;top:-1000em;left:0}
 
 /* layout */
 .wrp_header{padding:25px 0 10px;border-bottom:2px solid #333;text-align:left}
@@ -32,14 +33,27 @@ input::-ms-clear{display:none}
 .header .gnb li{float:left;margin-left:10px}
 .header .gnb li:first-child{margin-left:0}
 
-.container{width:800px;padding:20px;margin:0 auto;text-align:left}
-.container h2{padding-bottom:20px;font-size:16px;font-weight:bold}
+.container{width:800px;padding:40px;margin:0 auto;text-align:left}
+.container h2{padding-bottom:20px;font-size:18px;font-weight:bold;text-decoration:underline}
+.container h3{padding-bottom:10px;font-size:14px;font-weight:bold}
+caption{overflow:hidden;width:1px;height:1px;*height:0;padding:0;margin-top:-1px;font-size:0;line-height:0;text-indent:-999px}
 .bbs1{width:100%}
-.bbs1 caption{overflow:hidden;width:1px;height:1px;*height:0;padding:0;margin-top:-1px;font-size:0;line-height:0;text-indent:-999px}
 .bbs1 th{height:30px;border-top:1px solid #666;border-bottom:2px solid #666;text-align:center}
 .bbs1 td{height:30px;border-bottom:1px solid #666;text-align:center}
 .bbs1 td.tit{padding-left:15px;text-align:left}
 
 .pagenation{padding-top:30px;text-align:center}
-.pagenation a{display:inline-block;box-sizing:border-box;height:20px;line-height:20px;padding:0 6px;margin:0 3px;border:1px solid #ccc;color:#666;text-align:center}
+.pagenation a{display:inline-block;box-sizing:border-box;height:20px;line-height:20px;padding:0 6px;margin:0 2px;border:1px solid #ccc;color:#666;text-align:center}
 .pagenation a.on{background:#666;font-weight:bold;color:#fff}
+
+.wrp_btn_r{padding-top:10px;text-align:right}
+.wrp_btn_r a{margin-left:5px}
+.wrp_btn_r a:first-child{margin-left:0}
+.btn{display:inline-block;height:28px;line-height:28px;padding:0 20px;border:1px solid #666;text-align:center}
+.bbs2{width:100%;border-bottom:1px solid #666}
+.bbs2 tbody tr:first-child th, .bbs2 tbody tr:first-child td{border-top:2px solid #666}
+.bbs2 th{border-right:1px solid #ccc;background:#f7f7f7}
+.bbs2 th, .bbs2 td{padding:10px 0 10px 20px;border-top:1px solid #ccc}
+.bbs2 input, textarea{width:500px;padding:5px}
+.bbs2 input{width:500px}
+.bbs2 textarea{height:200px}

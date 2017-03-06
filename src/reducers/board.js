@@ -6,6 +6,9 @@ const initialState = {
         status: '',
         items: [],
         pagenation: {}
+    },
+    write: {
+        status: ''
     }
 };
 
@@ -30,6 +33,24 @@ export default function board(state = initialState, action){
                 list: {
                     status: {$set: 'FAILURE'},
                     error: action.error
+                }
+            });
+        case types.BOARD_WRITE:
+            return update(state, {
+                write: {
+                    status: {$set: 'WAITING'}
+                }
+            });
+        case types.BOARD_WRITE_SUCCESS:
+            return update(state, {
+                write: {
+                    status: {$set: 'SUCCESS'}
+                }
+            });
+        case types.BOARD_WRITE_FAILURE:
+            return update(state, {
+                write: {
+                    status: {$set: 'FAILURE'}
                 }
             });
         default:

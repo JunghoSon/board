@@ -24,10 +24,10 @@ const Board = new Schema({
     }
 });
 
-Board.statics.create = function(title, author, content){
+Board.statics.create = function(author, title, content){
     const board = new this({
-        title,
         author,
+        title,
         content
     });
 

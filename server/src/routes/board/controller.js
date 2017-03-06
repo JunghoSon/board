@@ -1,7 +1,7 @@
 import Board from '../../models/Board';
 
 exports.create = (req, res) => {
-    const { title, author, content } = req.body;
+    const { author, title, content } = req.body;
 
     const respond = () => {
         res.json({
@@ -17,7 +17,7 @@ exports.create = (req, res) => {
         });
     }
 
-    Board.create(title, author, content)
+    Board.create(author, title, content)
          .then(respond)
          .catch(onError);
 };
