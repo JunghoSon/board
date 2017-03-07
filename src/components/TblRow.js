@@ -3,6 +3,7 @@ import { Link } from 'react-router';
 
 class TblRow extends Component {
     render(){
+        console.log('TblRow render');
         let date = new Date(this.props.date);
         let year = date.getFullYear();
         let month = date.getMonth() + 1;

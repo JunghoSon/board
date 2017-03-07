@@ -1,65 +1,57 @@
 import React, { Component } from 'react';
 import { Tbl, Pagenation } from 'components';
-import { connect } from 'react-redux';
-import { boardListRequest } from 'actions/board';
-import { Link, browserHistory } from 'react-router';
+import { Link } from 'react-router';
 
 class List extends Component {
-    constructor(props){
-        super(props);
-    }
-    
     componentDidMount(){
-        this.props.boardListRequest(this.props.params.page)
+        this.props.onList(this.props.params.page)
             .then(() => {
-                
+                //do success
             })
             .catch((err) => {
-                console.log(err);
+                //do failure
                 browserHistory.push('/err');
             });
     }
-
+    
     componentWillReceiveProps(nextProps){
         if(this.props.params.page !== nextProps.params.page){
-            this.props.boardListRequest(nextProps.params.page);
+            this.props.onList(nextProps.params.page);
         }
     }
     
     shouldComponentUpdate(nextProps, nextState){
-        let update = JSON.stringify(this.props.listItems) !== JSON.stringify(nextProps.listItems);
+        let update = JSON.stringify(this.props.list.items) !== JSON.stringify(nextProps.list.items);
         return update;    
     }
-
+    
     render(){
+        let { items, pagenation } = this.props.list;
+        
         return (
             <div>
                 <h3>리스트</h3>
-                <Tbl items={this.props.listItems}/>
+                <Tbl items={items}/>
                 <p className="wrp_btn_r"><Link to="/board/write" className="btn">글쓰기</Link></p>
-                <Pagenation prev={this.props.pagenation.prevPage}
-                            next={this.props.pagenation.nextPage}
-                            current={this.props.pagenation.current}
-                            pages={this.props.pagenation.pages}/>
+                <Pagenation prev={pagenation.prevPage}
+                            next={pagenation.nextPage}
+                            current={pagenation.current}
+                            pages={pagenation.pages}/>
             </div>
         );
     }
 }
 
-const mapStateToProps = (state) => {
-    return {
-        listStatus: state.board.list.status,
-        listItems: state.board.list.items,
-        pagenation: state.board.list.pagenation
-    };
+List.propTypes = {
+    list: React.PropTypes.object,
+    onList: React.PropTypes.func
 };
 
-const mapDispatchToProps = (dispatch) => {
-    return {
-        boardListRequest: (page) => {
-            return dispatch(boardListRequest(page));
-        }
-    };
+List.defaultProps = {
+    list: {},
+    onList: () => {
+        console.log('List func is not defined');
+    }
 };
 
-export default connect(mapStateToProps, mapDispatchToProps)(List);
+export default List;

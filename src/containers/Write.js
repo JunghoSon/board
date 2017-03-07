@@ -1,6 +1,4 @@
 import React, { Component } from 'react';
-import { connect } from 'react-redux';
-import { boardWriteRequest } from 'actions/board';
 import { browserHistory, Link } from 'react-router';
 
 class Write extends Component {
@@ -15,6 +13,7 @@ class Write extends Component {
         
         this.handleChange = this.handleChange.bind(this);
         this.handleClick = this.handleClick.bind(this);
+        this.handleBack = this.handleBack.bind(this);
     }
     
     handleChange(e){
@@ -29,7 +28,7 @@ class Write extends Component {
     handleClick(){
         let { author, title, content } = this.state;
         
-        this.props.boardWriteRequest(author, title, content)
+        this.props.onWrite(author, title, content)
             .then(() => {
                 this.setState({
                     author: '',
@@ -41,12 +40,11 @@ class Write extends Component {
             });
     }
     
+    handleBack(){
+        browserHistory.goBack();
+    }
+    
     render(){
-        let current = (typeof this.props.current === 'undefined') ? 1 : this.props.current;
-        let btn_cancel = (
-            <Link to={`/board/list/${current}`} className="btn">취소</Link>
-        );
-        
         return (
             <div>
                 <h3>글쓰기</h3>
@@ -76,7 +74,7 @@ class Write extends Component {
                         </table>
                         <p className="wrp_btn_r">
                             <a className="btn" onClick={this.handleClick}>저장</a>
-                            {btn_cancel}
+                            <a className="btn" onClick={this.handleBack}>취소</a>
                         </p>
                     </fieldset>
                 </form>
@@ -85,19 +83,16 @@ class Write extends Component {
     }
 }
 
-const mapStateToProps = (state) => {
-    return {
-        status: state.board.write.status,
-        current: state.board.list.pagenation.current
-    };
+Write.propTypes = {
+    list: React.PropTypes.object,
+    onWrite: React.PropTypes.func
 };
 
-const mapDispatchToProps = (dispatch) => {
-    return {
-        boardWriteRequest: (author, title, content) => {
-            return dispatch(boardWriteRequest(author, title, content));
-        }
+Write.defaultProps = {
+    list: {},
+    onWrite: () => {
+        console.log('Write func is not defined');
     }
 };
 
-export default connect(mapStateToProps, mapDispatchToProps)(Write);
+export default Write;
