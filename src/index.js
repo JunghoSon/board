@@ -21,6 +21,7 @@ ReactDOM.render(
                         <Route path=":page" component={List}/>
                     </Route>
                     <Route path="write" component={Write}/>
+                    //<Route path="detail/:id" component={Detail}/>
                 </Route>
                 <Route path="err" component={Err}/>
             </Route>

@@ -18,7 +18,6 @@ class Tbl extends Component {
     }
     
     render(){
-        console.log('Tbl render');
         let mapToItems = (items) => {
             return items.map((item, i) => {
                 let { title, author, date, num, _id } = item;
