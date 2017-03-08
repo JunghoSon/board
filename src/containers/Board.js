@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
-import { boardListRequest, boardWriteRequest } from 'actions/board';
+import { boardListRequest, boardWriteRequest, boardDetailRequest } from 'actions/board';
 
 class Board extends Component {
     constructor(props){
@@ -8,6 +8,7 @@ class Board extends Component {
         
         this.handleList = this.handleList.bind(this);
         this.handleWrite = this.handleWrite.bind(this);
+        this.handleDetail = this.handleDetail.bind(this);
     }
     
     handleList(page){
@@ -18,15 +19,20 @@ class Board extends Component {
         return this.props.boardWriteRequest(author, title, content);
     }
     
+    handleDetail(id){
+        return this.props.boardDetailRequest(id);
+    }
+    
     render(){
-        const { list, write } = this.props;
+        const { list, write, detail } = this.props;
         const onList = this.handleList;
         const onWrite = this.handleWrite;
+        const onDetail = this.handleDetail;
         
         return (
             <div>
                 <h2>Board</h2>
-                {React.cloneElement(this.props.children, {list, write, onList, onWrite})}
+                {React.cloneElement(this.props.children, {list, write, detail, onList, onWrite, onDetail})}
             </div>
         );
     }
@@ -35,7 +41,8 @@ class Board extends Component {
 const mapStateToProps = (state) => {
     return {
         list: state.board.list,
-        write: state.board.write
+        write: state.board.write,
+        detail: state.board.detail
     };
 };
 
@@ -46,6 +53,9 @@ const mapDispatchToProps = (dispatch) => {
         },
         boardWriteRequest: (author, title, content) => {
             return dispatch(boardWriteRequest(author, title, content));
+        },
+        boardDetailRequest: (id) => {
+            return dispatch(boardDetailRequest(id));
         }
     };
 };

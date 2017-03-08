@@ -3,6 +3,7 @@ import Home from './Home';
 import Board from './Board';
 import List from './List';
 import Write from './Write';
+import Detail from './Detail';
 import Err from './Err';
 
 export {
@@ -11,5 +12,6 @@ export {
     Board,
     List,
     Write,
+    Detail,
     Err
 };

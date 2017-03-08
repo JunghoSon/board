@@ -9,7 +9,13 @@ const initialState = {
         error: {}
     },
     write: {
-        status: ''
+        status: '',
+        error: {}
+    },
+    detail: {
+        status: '',
+        detail: {},
+        error: {}
     }
 };
 
@@ -39,7 +45,8 @@ export default function board(state = initialState, action){
         case types.BOARD_WRITE:
             return update(state, {
                 write: {
-                    status: {$set: 'WAITING'}
+                    status: {$set: 'WAITING'},
+                    error: {$set: {}}
                 }
             });
         case types.BOARD_WRITE_SUCCESS:
@@ -51,7 +58,29 @@ export default function board(state = initialState, action){
         case types.BOARD_WRITE_FAILURE:
             return update(state, {
                 write: {
-                    status: {$set: 'FAILURE'}
+                    status: {$set: 'FAILURE'},
+                    error: {$set: action.error}
+                }
+            });
+        case types.BOARD_DETAIL:
+            return update(state, {
+                write: {
+                    status: {$set: 'WAITING'},
+                    error: {$set: {}}
+                }
+            });
+        case types.BOARD_DETAIL_SUCCESS:
+            return update(state, {
+                write: {
+                    status: {$set: 'SUCCESS'},
+                    detail: {$set: action.detail}
+                }
+            });
+        case types.BOARD_DETAIL_FAILURE:
+            return update(state, {
+                write: {
+                    status: {$set: 'FAILURE'},
+                    error: action.error
                 }
             });
         default:
