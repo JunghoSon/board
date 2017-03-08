@@ -85,7 +85,7 @@ export function boardDetailRequest(id){
         
         return axios.get('/api/board/detail/' + id)
                     .then((response) => {
-                        dispatch(boardDetailSuccess(response.data.detail));
+                        dispatch(boardDetailSuccess(response.data.board));
                     })
                     .catch((error) => {
                         dispatch(error);
@@ -99,10 +99,11 @@ export function boardDetail(){
     };
 }
 
-export function boardDetailSuccess(detail){
+export function boardDetailSuccess(board){
+    console.log(board);
     return {
         type: BOARD_DETAIL_SUCCESS,
-        detail: detail
+        board: board
     };
 }
 

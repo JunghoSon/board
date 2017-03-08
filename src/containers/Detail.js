@@ -11,8 +11,13 @@ class Detail extends Component {
             });
     }
     
+    componentWillUnmount(){
+        this.props.detail.board = {};
+    }
+    
     render(){
-        let { title, author, date, content } = this.props.detail;
+        console.log('render');
+        let { title, author, date, content } = this.props.detail.board;
         
         return (
             <div>
@@ -28,7 +33,7 @@ class Detail extends Component {
                     <tbody>
                         <tr>
                             <th scope="row">제목</th>
-                            <td colspan="3">{ title }</td>
+                            <td colSpan="3">{ title }</td>
                         </tr>
                         <tr>
                             <th scope="row">작성자</th>
@@ -38,7 +43,7 @@ class Detail extends Component {
                         </tr>
                         <tr>
                             <th scope="row">내용</th>
-                            <td colspan="3">{ content }</td>
+                            <td colSpan="3">{ content }</td>
                         </tr>
                     </tbody>
                 </table>

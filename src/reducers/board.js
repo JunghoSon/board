@@ -14,7 +14,7 @@ const initialState = {
     },
     detail: {
         status: '',
-        detail: {},
+        board: {},
         error: {}
     }
 };
@@ -64,21 +64,21 @@ export default function board(state = initialState, action){
             });
         case types.BOARD_DETAIL:
             return update(state, {
-                write: {
+                detail: {
                     status: {$set: 'WAITING'},
                     error: {$set: {}}
                 }
             });
         case types.BOARD_DETAIL_SUCCESS:
             return update(state, {
-                write: {
+                detail: {
                     status: {$set: 'SUCCESS'},
-                    detail: {$set: action.detail}
+                    board: {$set: action.board}
                 }
             });
         case types.BOARD_DETAIL_FAILURE:
             return update(state, {
-                write: {
+                detail: {
                     status: {$set: 'FAILURE'},
                     error: action.error
                 }
