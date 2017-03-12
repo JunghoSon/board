@@ -1,5 +1,4 @@
 import Board from '../../models/Board';
-import mongoose from 'mongoose';
 
 exports.create = (req, res) => {
     const { author, title, content } = req.body;
@@ -64,22 +63,14 @@ exports.list = (req, res) => {
 
 exports.detail = (req, res) => {
     let id = req.params.id;
-    
-    if(!mongoose.Types.ObjectId.isValid(id)){
-        return res.status(400).json({
-            message: 'INVALID ID'
-        });
-    }
-    
-    let oId = new mongoose.Types.ObjectId(req.params.id);
-    
+
     Board.findById(req.params.id, (err, board) => {
         if(!board){
             return res.status(404).json({
                 message: 'NO RESOURCE'
             });
         }
-        
+
         res.json({
             success: true,
             board: board
