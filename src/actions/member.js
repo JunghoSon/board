@@ -9,13 +9,13 @@ export function memberLoginRequest(id, password){
     return (dispatch) => {
         dispatch(memberLogin);
 
-        axios.post('/member/login', { id, password })
-             .then((response) => {
-                 dispatch(memberLoginSuccess(response.data));
-             })
-             .catch((error) => {
-                 dispatch(memberLoginFailure(error));
-             });
+        return axios.post('/member/login', { id, password })
+                    .then((response) => {
+                        dispatch(memberLoginSuccess(response.data));
+                    })
+                    .catch((error) => {
+                        dispatch(memberLoginFailure(error));
+                    });
     };
 }
 
