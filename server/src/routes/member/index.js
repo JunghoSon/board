@@ -3,6 +3,7 @@ import controller from './controller';
 
 const router = express.Router();
 
-router.pos('/register', controller.register);
+router.post('/register', controller.register);
+router.post('/login', controller.login);
 
 export default router;

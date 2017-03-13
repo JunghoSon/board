@@ -5,7 +5,12 @@ import { Provider } from 'react-redux';
 import { createStore, applyMiddleware } from 'redux';
 import reducers from 'reducers';
 import thunk from 'redux-thunk';
-import { App, Home, Board, List, Write, Detail, Err } from 'containers';
+import { 
+    App, Home, Board, Err, Member
+} from 'containers';
+import {
+    List, Write, Detail, Login, Register
+} from 'components';
 
 const store = createStore(reducers, applyMiddleware(thunk));
 const rootElement = document.getElementById('root');
@@ -16,14 +21,19 @@ ReactDOM.render(
             <Route path="/" component={App}>
                 <IndexRoute component={Home}/>
                 <Route path="board" component={Board}>
+                    <IndexRoute component={List}/>
                     <Route path="list" component={List}>
-                        <IndexRoute component={List}/>
                         <Route path=":page" component={List}/>
                     </Route>
-                    <Route path="write" component={Write}/>
                     <Route path="detail/:id" component={Detail}/>
+                    <Route path="write" component={Write}/>
                 </Route>
                 <Route path="err" component={Err}/>
+                <Route path="member" component={Member}>
+                    <IndexRoute component={Login}/>
+                    <Route path="login" component={Login}/>
+                    <Route path="register" component={Register}/>
+                </Route>
             </Route>
         </Router>
     </Provider>, rootElement);

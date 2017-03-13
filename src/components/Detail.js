@@ -16,7 +16,6 @@ class Detail extends Component {
     }
     
     render(){
-        console.log('render');
         let { title, author, date, content } = this.props.detail.board;
         
         return (

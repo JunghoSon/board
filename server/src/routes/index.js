@@ -1,11 +1,11 @@
 import express from 'express';
 import board from './board';
-import auth from './auth';
+import member from './member';
 
 const router = express.Router();
 
 router.use('/board', board);
 
-router.use('/auth', auth);
+router.use('/member', member);
 
 export default router;
