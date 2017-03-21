@@ -6,6 +6,11 @@ const initialState = {
         status: '',
         data: {},
         error: {}
+    },
+    register: {
+        status: '',
+        data: {},
+        error: {}
     }
 };
 
@@ -27,6 +32,26 @@ export default function member(state = initialState, action){
         case types.MEMBER_LOGIN_FAILURE:
             return update(state, {
                 login: {
+                    status: {$set: 'FAILURE'},
+                    error: {$set: action.error}
+                }
+            });
+        case types.MEMBER_REGISTER:
+            return update(state, {
+                register: {
+                    status : {$set: 'WAITING'}
+                }
+            });
+        case types.MEMBER_REGISTER_SUCCESS:
+            return update(state, {
+                register: {
+                    status: {$set: 'SUCCESS'},
+                    data: {$set: action.data}
+                }
+            });
+        case types.MEMBER_REGISTER_FAILURE:
+            return update(state, {
+                register: {
                     status: {$set: 'FAILURE'},
                     error: {$set: action.error}
                 }

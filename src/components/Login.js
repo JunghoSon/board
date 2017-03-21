@@ -26,7 +26,7 @@ class Login extends Component {
         let id = this.state.id;
         let pw = this.state.pw;
 
-        this.props.onLogin(id, pw)
+        this.props.memberLoginRequest(id, pw)
             .then(() => {
                 //토큰 처리
             })
@@ -53,11 +53,13 @@ class Login extends Component {
 }
 
 Login.propTypes = {
-    onLogin: React.PropTypes.func
+    login: React.PropTypes.object,
+    memberLoginRequest: React.PropTypes.func
 };
 
 Login.defaultProps = {
-    onLogin: () => {
+    login: {},
+    memberLoginRequest: () => {
         console.log('Login func is not defined');
     }
 };

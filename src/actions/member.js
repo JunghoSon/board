@@ -38,3 +38,37 @@ export function memberLoginFailure(error){
         error: error
     }
 }
+
+export function memberRegisterRequest(id, password, email){
+    return (dispatch) => {
+        dispatch(memberRegister());
+        
+        return axios.post('/api/memeber/register', { id, password, email })
+                    .then((response) => {
+                        dispatch(memberRegisterSuccess(response.data));
+                    })
+                    .catch((error) => {
+                        dispatch(memberRegisterFailure(error));
+                    });
+    };
+}
+
+export function memberRegister(){
+    return {
+        type: MEMBER_REGISTER
+    };
+}
+
+export function memberRegisterSuccess(data){
+    return {
+        type: MEMBER_REGISTER_SUCCESS,
+        data: data
+    };
+}
+
+export function memberRegisterFailure(error){
+    return {
+        type: MEMBER_REGISTER_FAILURE,
+        error: error
+    };
+}
