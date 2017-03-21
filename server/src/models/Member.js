@@ -8,7 +8,7 @@ const Member = new Schema({
     id: String,
     password: String,
     email: String,
-    lastLogin: {type:Date, default:Date.now},
+    lastLogged: {type:Date, default:Date.now},
     profile: {
         gender: String,
         birth: Date,
@@ -19,31 +19,32 @@ const Member = new Schema({
         religion: String,
         purpose: String,
         introduction: String,
-        lastUpdate: {type:Date, default:Date.now}
+        lastUpdated: {type:Date, default:Date.now}
     }
 });
 
-Member.statics.create = (id, password, email) => {
+Member.statics.create = function(id, password, email){
+    console.log(email);
     const encrypted = crypto.createHmac('sha1', config.secret)
                             .update(password)
                             .digest('base64');
 
-    const Member = new this({
+    const member = new this({
         id,
         password: encrypted,
         email
     });
 
-    return Member.save();
+    return member.save();
 };
 
-Member.statics.findOneById = (id) => {
-    return this.findOnd({
+Member.statics.findOneById = function(id){
+    return this.findOne({
         id
     }).exec();
 };
 
-Member.methods.verify = (password) => {
+Member.methods.verify = function(password){
     const encrypted = crypto.createHmac('sha1', config.secret)
                             .update(password)
                             .digest('base64');

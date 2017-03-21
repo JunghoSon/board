@@ -3,7 +3,8 @@ import { Header } from 'components';
 import { connect } from 'react-redux';
 import { 
     memberLoginRequest,
-    memberRegisterRequest
+    memberRegisterRequest,
+    memberCheckIdRequest
 } from 'actions/member';
     
 class Member extends Component {
@@ -12,12 +13,12 @@ class Member extends Component {
     }
     
     render(){
-        const { login, register, memberLoginRequest, memberRegisterRequest } = this.props;
+        const { login, register, checkId, memberLoginRequest, memberRegisterRequest, memberCheckIdRequest } = this.props;
         
         return (
             <div>
                 <h2>Member</h2>
-                {React.cloneElement(this.props.children, { login, register, memberLoginRequest, memberRegisterRequest })}
+                {React.cloneElement(this.props.children, { login, register, checkId, memberLoginRequest, memberRegisterRequest, memberCheckIdRequest })}
             </div>
         );
     }
@@ -26,7 +27,8 @@ class Member extends Component {
 const mapStateToProps = (state) => {
     return {
         login: state.member.login,
-        register: state.member.register
+        register: state.member.register,
+        checkId: state.member.checkId
     };
 };
 
@@ -37,6 +39,9 @@ const mapDispatchToProps = (dispatch) => {
         },
         memberRegisterRequest: (id, password, email) => {
             return dispatch(memberRegisterRequest(id, password, email));
+        },
+        memberCheckIdRequest: (id) => {
+            return dispatch(memberCheckIdRequest(id));
         }
     };
 }

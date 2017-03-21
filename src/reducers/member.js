@@ -11,6 +11,11 @@ const initialState = {
         status: '',
         data: {},
         error: {}
+    },
+    checkId: {
+        status: '',
+        data: {},
+        error: {}
     }
 };
 
@@ -52,6 +57,26 @@ export default function member(state = initialState, action){
         case types.MEMBER_REGISTER_FAILURE:
             return update(state, {
                 register: {
+                    status: {$set: 'FAILURE'},
+                    error: {$set: action.error}
+                }
+            });
+        case types.MEMBER_CHECKID:
+            return update(state, {
+                checkId: {
+                    status : {$set: 'WAITING'}
+                }
+            });
+        case types.MEMBER_CHECKID_SUCCESS:
+            return update(state, {
+                checkId: {
+                    status: {$set: 'SUCCESS'},
+                    data: {$set: action.data}
+                }
+            });
+        case types.MEMBER_CHECKID_FAILURE:
+            return update(state, {
+                checkId: {
                     status: {$set: 'FAILURE'},
                     error: {$set: action.error}
                 }

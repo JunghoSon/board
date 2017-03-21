@@ -4,6 +4,7 @@ import controller from './controller';
 const router = express.Router();
 
 router.post('/register', controller.register);
+router.post('/checkId', controller.checkId);
 router.post('/login', controller.login);
 
 export default router;

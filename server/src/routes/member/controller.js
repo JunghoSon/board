@@ -2,13 +2,13 @@ import Member from '../../models/Member';
 import jwt from 'jsonwebtoken';
 
 exports.register = (req, res) => {
-    const { id, email, password } = req.body;
+    const { id, password, email  } = req.body;
 
     const create = (member) => {
         if(member){
             throw new Error('이미 존재하는 id 입니다.');
         }else{
-            return Member.create(id, email, password);
+            return Member.create(id, password, email);
         }
     };
 
@@ -20,12 +20,38 @@ exports.register = (req, res) => {
 
     const onError = (error) => {
         res.status(403).json({
-            message: error.message
+            message: error.message,
+            isId: true
         });
     }
 
     Member.findOneById(id)
           .then(create)
+          .then(respond)
+          .catch(onError);
+};
+
+exports.checkId = (req, res) => {
+    const { id } = req.body;
+    
+    const respond = (member) => {
+        if(member){
+            throw new Error('이미 존재하는 id 입니다.');
+        }else{
+            res.json({
+                message: '사용가능한 아이디 입니다.'
+            });
+        }
+    };
+    
+    const onError = (error) => {
+        res.status(403).json({
+            message: error.message,
+            isId: true
+        });
+    };
+    
+    Member.findOneById(id)
           .then(respond)
           .catch(onError);
 };
