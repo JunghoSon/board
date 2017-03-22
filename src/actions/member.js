@@ -5,6 +5,9 @@ import {
     MEMBER_CHECKID,
     MEMBER_CHECKID_SUCCESS,
     MEMBER_CHECKID_FAILURE,
+    MEMBER_CHECKEMAIL,
+    MEMBER_CHECKEMAIL_SUCCESS,
+    MEMBER_CHECKEMAIL_FAILURE,
     MEMBER_REGISTER,
     MEMBER_REGISTER_SUCCESS,
     MEMBER_REGISTER_FAILURE
@@ -75,6 +78,40 @@ export function memberCheckIdSuccess(data){
 export function memberCheckIdFailure(error){
     return {
         type: MEMBER_CHECKID_FAILURE,
+        error: error
+    };
+}
+
+export function memberCheckEmailRequest(email){
+    return (dispatch) => {
+        dispatch(memberCheckEmail());
+        
+        return axios.post('/api/member/checkEmail', { email })
+                    .then((response) => {
+                        dispatch(memberCheckEmailSuccess(response.data));
+                    })
+                    .catch((error) => {
+                        dispatch(memberCheckEmailFailure(error.response.data));
+                    });
+    };
+}
+
+export function memberCheckEmail(){
+    return {
+        type: MEMBER_CHECKEMAIL
+    };
+}
+
+export function memberCheckEmailSuccess(data){
+    return {
+        type: MEMBER_CHECKEMAIL_SUCCESS,
+        data: data
+    };
+}
+
+export function memberCheckEmailFailure(error){
+    return {
+        type: MEMBER_CHECKEMAIL_FAILURE,
         error: error
     };
 }

@@ -44,6 +44,12 @@ Member.statics.findOneById = function(id){
     }).exec();
 };
 
+Member.statics.findOneByEmail = function(email){
+    return this.findOne({
+        email
+    }).exec();
+};
+
 Member.methods.verify = function(password){
     const encrypted = crypto.createHmac('sha1', config.secret)
                             .update(password)

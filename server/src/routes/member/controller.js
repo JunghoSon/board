@@ -56,6 +56,30 @@ exports.checkId = (req, res) => {
           .catch(onError);
 };
 
+exports.checkEmail = (req, res) => {
+    const { email } = req.body;
+    
+    const respond = (email) => {
+        if(email){
+            throw new Error('이미 존재하는 email 입니다.');
+        }else{
+            res.json({
+                message: '사용가능한 email 입니다.'
+            });
+        }
+    };
+    
+    const onError = (error) => {
+        res.status(403).json({
+            message: error.message
+        });
+    };
+    
+    Member.findOneByEmail(email)
+          .then(respond)
+          .catch(onError);
+};
+
 exports.login = (req, res) => {
     const { id, password } = req.body;
     const secret = req.app.get('jwt-secret');

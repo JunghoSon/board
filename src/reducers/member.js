@@ -16,6 +16,11 @@ const initialState = {
         status: '',
         data: {},
         error: {}
+    },
+    checkEmail: {
+        status: '',
+        data: {},
+        error: {}
     }
 };
 
@@ -77,6 +82,26 @@ export default function member(state = initialState, action){
         case types.MEMBER_CHECKID_FAILURE:
             return update(state, {
                 checkId: {
+                    status: {$set: 'FAILURE'},
+                    error: {$set: action.error}
+                }
+            });
+        case types.MEMBER_CHECKEMAIL:
+            return update(state, {
+                checkEmail: {
+                    status : {$set: 'WAITING'}
+                }
+            });
+        case types.MEMBER_CHECKEMAIL_SUCCESS:
+            return update(state, {
+                checkEmail: {
+                    status: {$set: 'SUCCESS'},
+                    data: {$set: action.data}
+                }
+            });
+        case types.MEMBER_CHECKEMAIL_FAILURE:
+            return update(state, {
+                checkEmail: {
                     status: {$set: 'FAILURE'},
                     error: {$set: action.error}
                 }

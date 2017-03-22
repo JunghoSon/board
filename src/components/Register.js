@@ -10,23 +10,23 @@ class Register extends Component {
             password: '',
             password_confirm: '',
             email: '',
-            isCheck: false
+            checkStatusId: 0,
+            checkStatusPassword: 0,
+            checkStatusPasswordConfirm: 0,
+            checkStatusEmail: 0
         };
         
         this.handleChange = this.handleChange.bind(this);
         this.handleCheckId = this.handleCheckId.bind(this);
+        this.handleCheckPassword = this.handleCheckPassword.bind(this);
+        this.handleCheckPasswordConfirm = this.handleCheckPasswordConfirm.bind(this);
+        this.handleCheckEmail = this.handleCheckEmail.bind(this);
         this.handleRegister = this.handleRegister.bind(this);
     }
     
     handleChange(e){
         let name = e.target.name;
         let value = e.target.value;
-        
-        if(name === 'id' && this.state.isCheck){
-            this.setState({
-                isCheck: false
-            });
-        }
         
         this.setState({
             [name]: value
@@ -35,138 +35,128 @@ class Register extends Component {
     
     handleCheckId(){
         let id = this.state.id;
-        let idRegEx = /^[a-zA-Z0-9_-]\w{5,21}$/;
-        
-        this.setState({
-            isCheck: false
-        });
+        let idRegEx = /^[a-zA-Z0-9_-]\w{4,19}$/;
         
         if(id === ''){
-            alert('아이디를 입력해 주세요.');
             this.setState({
-                id: this.state.id
+                checkStatusId: 1
             });
-            this.idInput.focus();
-            return;
+            return Promise.resolve(false);
         }else if(!idRegEx.test(id)){
-            alert('아이디는 8자 이상 20자 이하 영문 대, 소문자, 숫자, \'_\', \'-\'만 가능합니다.');
             this.setState({
-                id: ''
+                checkStatusId: 2
             });
-            this.idInput.focus();
-            return;
+            return Promise.resolve(false);
         }
         
-        this.props.memberCheckIdRequest(id)
-            .then(() => {
-                this.setState({
-                    isCheck: true
-                });
+        return this.props.memberCheckIdRequest(id)
+                   .then(() => {
+                       let status = (this.props.checkId.status === 'SUCCESS') ? 4 : 3;
+                        
+                       this.setState({
+                           checkStatusId: status
+                       });
+                       return Promise.resolve(false);
+                    });
+    }
+    
+    handleCheckPassword(){
+        let password = this.state.password;
+        let passwordRegEx = /^(?=.*[a-zA-Z])(?=.*[!@#$%^&*+=-])(?=.*[0-9]).{5,15}$/;
+        let status = 0;
+        
+        if(password === ''){
+            status = 1;
+        }else if(!passwordRegEx.test(password)){
+            status = 5;
+        }
+        
+        this.setState({
+            checkStatusPassword: status
+        });
+        return Promise.resolve(false);
+    }
+    
+    handleCheckPasswordConfirm(){
+        let { password, password_confirm } = this.state;
+        let passwordRegEx = /^(?=.*[a-zA-Z])(?=.*[!@#$%^&*+=-])(?=.*[0-9]).{5,15}$/;
+        let status = 0;
+        
+        if(password_confirm === ''){
+            status = 1;
+        }else if(!passwordRegEx.test(password)){
+            status = 5;
+        }else if(password !== password_confirm){
+            status = 6;
+        }
+        
+        this.setState({
+            checkStatusPasswordConfirm: status
+        });
+        return Promise.resolve(false);
+    }
+    
+    handleCheckEmail(){
+        let email = this.state.email;
+        let emailRegEx = /^[0-9a-zA-Z]([-_\.]?[0-9a-zA-Z])*@[0-9a-zA-Z]([-_\.]?[0-9a-zA-Z])*\.[a-zA-Z]{2,3}$/i;
+        
+        if(email === ''){
+            this.setState({
+                checkStatusEmail: 1
             });
+            return Promise.resolve(false);
+        }else if(!emailRegEx.test(email)){
+            this.setState({
+                checkStatusEmail: 8
+            });
+            return Promise.resolve(false);
+        }
+        
+        return this.props.memberCheckEmailRequest(email)
+                   .then(() => {
+                       let status = (this.props.checkEmail.status === 'SUCCESS') ? 9 : 7;
+                        
+                       this.setState({
+                           checkStatusEmail: status
+                       });
+                       return Promise.resolve(false);
+                    });
     }
     
     handleRegister(){
         let { id, password, password_confirm, email } = this.state;
-        let idRegEx = /^[a-zA-Z0-9_-]\w{5,21}$/;
-        let passwordRegEx = /^(?=.*[a-zA-Z])(?=.*[!@#$%^&*+=-])(?=.*[0-9]).{6,21}$/;
-        let emailRegEx = /^[0-9a-zA-Z]([-_\.]?[0-9a-zA-Z])*@[0-9a-zA-Z]([-_\.]?[0-9a-zA-Z])*\.[a-zA-Z]{2,3}$/i; 
         
-        if(id === ''){
-            alert('아이디를 입력해 주세요.');
-            this.setState({
-                id: ''
-            });
-            this.idInput.focus();
-            return;
-        }else if(!idRegEx.test(id)){
-            alert('아이디는 8자 이상 20자 이하 영문 대, 소문자, 숫자, \'_\', \'-\'만 가능합니다.');
-            this.setState({
-                id: ''
-            });
-            this.idInput.focus();
-            return;
-        }
-        
-        if(password === ''){
-            alert('비밀번호를 입력해 주세요.');
-            this.setState({
-                password: ''
-            });
-            this.passwordInput.focus();
-            return;
-        }
-        
-        if(password_confirm === ''){
-            alert('비밀번호 확인을 입력해 주세요.');
-            this.setState({
-                password_confirm: ''
-            });
-            this.passwordConfirmInput.focus();
-            return;
-        }
-        
-        if(password !== password_confirm){
-            alert('비밀번호와 비밀번호 확인이 일치하지 않습니다.');
-            this.setState({
-                password: '',
-                password_confirm: ''
-            });
-            this.passwordInput.focus();
-            return;
-        }
-        
-        if(!passwordRegEx.test(password)){
-            alert('비밀번호 영문 대, 소문자, 숫자, 기호를 포함한 8자 이상 20자 미만 입니다.');
-            this.setState({
-                password: '',
-                password_confirm: ''
-            });
-            this.passwordInput.focus();
-            return;
-        }
-        
-        if(email === ''){
-            alert('이메일을 입력해 주세요');
-            this.setState({
-                email: ''
-            });
-            this.emailInput.focus();
-            return;
-        }else if(!emailRegEx.test(email)){
-            alert('이메일 형식이 바르지 않습니다');
-            this.setState({
-                email: ''
-            });
-            this.emailInput.focus();
-            return;
-        }
-        
-        this.props.memberRegisterRequest(id, password, email)
-            .then((data) => {
-                if(this.props.register.status === 'SUCCESS'){
-                    alert('회원가입이 성곡적으로 이루어 졌습니다.');
-                    browserHistory.push('/member/login');
-                }else{
-                    alert(this.props.register.error.message);
-                    this.setState({
-                        id: '',
-                        password: '',
-                        password_confirm: '',
-                        email: ''
-                    });
-                    this.idInput.focus();
+        this.handleCheckId()
+            .then(this.handleCheckPassword)
+            .then(this.handleCheckPasswordConfirm)
+            .then(this.handleCheckEmail)
+            .then(() => {
+                if(this.state.checkStatusId === 4  && this.state.checkStatusPassword === 0 && this.state.checkStatusPasswordConfirm === 0 && this.state.checkStatusEmail === 9){
+                    this.props.memberRegisterRequest(id, password, email)
+                        .then((data) => {
+                            if(this.props.register.status === 'SUCCESS'){
+                                alert('회원가입이 성곡적으로 이루어 졌습니다.');
+                                browserHistory.push('/member/login');
+                            }
+                        });
                 }
             });
+        
     }
         
     render(){
-        let existId = (
-            <span>이미 존재하는 아이디 입니다.</span>
-        );
-        
-        let noneExistId = (
-            <span>사용 가능한 아이디 입니다.</span>
-        );
+        let notice = [
+            '',
+            '필수 정보입니다.',
+            '5~20자의 영문 소문자, 숫자와 특수기호(_),(-)만 사용 가능합니다.',
+            '이미 사용중인 아이디 입니다.',
+            '사용 가능한 아이디 입니다.',
+            '6~16자 영문 대 소문자, 숫자, 특수문자를 사용하세요.',
+            '비밀번호가 일치하지 않습니다.',
+            '이미 사용중인 이메일 입니다.',
+            '이메일 형식이 바르지 않습니다.',
+            '사용 가능한 이메일 입니다.'
+        ];
         
         return (    
             <div>
@@ -174,13 +164,33 @@ class Register extends Component {
                 <form>
                     <ul>
                         <li>
-                            <input type="text" name="id" id="id" className="id" placeholder="아이디" onBlur={this.handleCheckId} title="비밀번호" value={this.state.id} onChange={this.handleChange} ref={(input) => { this.idInput = input; }}/>
-                            { this.state.isCheck && this.props.checkId.status === 'FAILURE' ? existId : undefined }
-                            { this.state.isCheck && this.props.checkId.status === 'SUCCESS' ? noneExistId : undefined }
+                            <input type="text" name="id" className="id" placeholder="아이디" title="비밀번호" 
+                                   value={this.state.id} 
+                                   onChange={this.handleChange} 
+                                   onBlur={this.handleCheckId} />
+                            <span style={{paddingLeft:10 + 'px'}}>{ notice[this.state.checkStatusId] }</span>
                         </li>
-                        <li><input type="password" name="password" id="password" className="password" placeholder="비밀번호" title="비밀번호" value={this.state.password} onChange={this.handleChange} ref={(input) => { this.passwordInput = input; }} /></li>
-                        <li><input type="password" name="password_confirm" id="password_confirm" className="password_confirm" placeholder="비밀번호 확인" title="비밀번호 확인" value={this.state.password_confirm} onChange={this.handleChange} ref={(input) => { this.passwordConfirmInput = input; }} /></li>
-                        <li><input type="text" name="email" id="email" className="email" placeholder="이메일" title="이메일" value={this.state.email} onChange={this.handleChange} ref={(input) => { this.emailInput = input; }} /></li>
+                        <li>
+                            <input type="password" name="password" className="password" placeholder="비밀번호" title="비밀번호" 
+                                   value={this.state.password} 
+                                   onChange={this.handleChange} 
+                                   onBlur={this.handleCheckPassword} />
+                            <span style={{paddingLeft:10 + 'px'}}>{ notice[this.state.checkStatusPassword] }</span>
+                        </li>
+                        <li>
+                            <input type="password" name="password_confirm" className="password_confirm" placeholder="비밀번호 확인" title="비밀번호 확인" 
+                                   value={this.state.password_confirm} 
+                                   onChange={this.handleChange} 
+                                   onBlur={this.handleCheckPasswordConfirm} />
+                            <span style={{paddingLeft:10 + 'px'}}>{ notice[this.state.checkStatusPasswordConfirm] }</span>
+                        </li>
+                        <li>
+                            <input type="text" name="email" className="email" placeholder="이메일" title="이메일" 
+                                   value={this.state.email} 
+                                   onChange={this.handleChange} 
+                                   onBlur={this.handleCheckEmail} />
+                            <span style={{paddingLeft:10 + 'px'}}>{ notice[this.state.checkStatusEmail] }</span>
+                        </li>
                     </ul>
                     <a onClick={this.handleRegister}>회원가입</a>
                     <Link to="/member/login">로그인</Link>
@@ -193,6 +203,7 @@ class Register extends Component {
 Register.propTypes = {
     register: React.PropTypes.object,
     checkId: React.PropTypes.object,
+    checkEmail: React.PropTypes.object,
     memberRegisterRequest: React.PropTypes.func,
     memberCheckIdRequest: React.PropTypes.func
 };
@@ -200,11 +211,15 @@ Register.propTypes = {
 Register.defaultProps = {
     register: {},
     checkId: {},
+    checkEmail: {},
     memberRegisterRequest: () => {
         console.log('Register func is not defined');
     },
     memberCheckIdRequest: () => {
         console.log('CheckId func is not defined');
+    },
+    memberCheckEmailRequest: () => {
+        console.log('CheckEmail func is not defined');
     }
 };
 

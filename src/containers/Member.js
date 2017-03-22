@@ -4,7 +4,8 @@ import { connect } from 'react-redux';
 import { 
     memberLoginRequest,
     memberRegisterRequest,
-    memberCheckIdRequest
+    memberCheckIdRequest,
+    memberCheckEmailRequest
 } from 'actions/member';
     
 class Member extends Component {
@@ -13,12 +14,12 @@ class Member extends Component {
     }
     
     render(){
-        const { login, register, checkId, memberLoginRequest, memberRegisterRequest, memberCheckIdRequest } = this.props;
+        const { login, register, checkId, checkEmail, memberLoginRequest, memberRegisterRequest, memberCheckIdRequest, memberCheckEmailRequest } = this.props;
         
         return (
             <div>
                 <h2>Member</h2>
-                {React.cloneElement(this.props.children, { login, register, checkId, memberLoginRequest, memberRegisterRequest, memberCheckIdRequest })}
+                {React.cloneElement(this.props.children, { login, register, checkId, checkEmail, memberLoginRequest, memberRegisterRequest, memberCheckIdRequest, memberCheckEmailRequest })}
             </div>
         );
     }
@@ -28,7 +29,8 @@ const mapStateToProps = (state) => {
     return {
         login: state.member.login,
         register: state.member.register,
-        checkId: state.member.checkId
+        checkId: state.member.checkId,
+        checkEmail: state.member.checkEmail
     };
 };
 
@@ -42,6 +44,9 @@ const mapDispatchToProps = (dispatch) => {
         },
         memberCheckIdRequest: (id) => {
             return dispatch(memberCheckIdRequest(id));
+        },
+        memberCheckEmailRequest: (email) => {
+            return dispatch(memberCheckEmailRequest(email));
         }
     };
 }
