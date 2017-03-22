@@ -1,5 +1,6 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
+import { Link } from 'react-router';
 
 class Home extends Component {
     constructor(props){
@@ -45,6 +46,7 @@ class Home extends Component {
                         <li><input type="password" name="password" id="password" className="password" placeholder="비밀번호" title="비밀번호" value={this.state.password} onChange={this.handleChange} /></li>
                     </ul>
                     <a onClick={this.handleClick}>로그인</a>
+                    <Link to="/member/register">회원가입</Link>
                 </form>
             </div>
         );

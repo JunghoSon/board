@@ -88,6 +88,9 @@ class Register extends Component {
             status = 5;
         }else if(password !== password_confirm){
             status = 6;
+            this.setState({
+                password_confirm: ''
+            });
         }
         
         this.setState({
@@ -145,7 +148,7 @@ class Register extends Component {
     }
         
     render(){
-        let notice = [
+        const notice = [
             '',
             '필수 정보입니다.',
             '5~20자의 영문 소문자, 숫자와 특수기호(_),(-)만 사용 가능합니다.',
@@ -162,34 +165,35 @@ class Register extends Component {
             <div>
                 <h3>login</h3>
                 <form>
-                    <ul>
+                    <ul className="frm_register">
                         <li>
                             <input type="text" name="id" className="id" placeholder="아이디" title="비밀번호" 
                                    value={this.state.id} 
                                    onChange={this.handleChange} 
                                    onBlur={this.handleCheckId} />
-                            <span style={{paddingLeft:10 + 'px'}}>{ notice[this.state.checkStatusId] }</span>
+                            <span className={ this.state.checkStatusId === 4 ? 'fcg' : 'fcr' }>{ notice[this.state.checkStatusId] }</span>
                         </li>
                         <li>
                             <input type="password" name="password" className="password" placeholder="비밀번호" title="비밀번호" 
                                    value={this.state.password} 
                                    onChange={this.handleChange} 
                                    onBlur={this.handleCheckPassword} />
-                            <span style={{paddingLeft:10 + 'px'}}>{ notice[this.state.checkStatusPassword] }</span>
+                            <span className="fcr">{ notice[this.state.checkStatusPassword] }</span>
                         </li>
                         <li>
                             <input type="password" name="password_confirm" className="password_confirm" placeholder="비밀번호 확인" title="비밀번호 확인" 
                                    value={this.state.password_confirm} 
                                    onChange={this.handleChange} 
-                                   onBlur={this.handleCheckPasswordConfirm} />
-                            <span style={{paddingLeft:10 + 'px'}}>{ notice[this.state.checkStatusPasswordConfirm] }</span>
+                                   onBlur={this.handleCheckPasswordConfirm} 
+                                   ref={(input) => {this.passwordConfirmInput = input}}/>
+                            <span className="fcr">{ notice[this.state.checkStatusPasswordConfirm] }</span>
                         </li>
                         <li>
                             <input type="text" name="email" className="email" placeholder="이메일" title="이메일" 
                                    value={this.state.email} 
                                    onChange={this.handleChange} 
                                    onBlur={this.handleCheckEmail} />
-                            <span style={{paddingLeft:10 + 'px'}}>{ notice[this.state.checkStatusEmail] }</span>
+                            <span className={ this.state.checkStatusEmail === 9 ? 'fcg' : 'fcr' }>{ notice[this.state.checkStatusEmail] }</span>
                         </li>
                     </ul>
                     <a onClick={this.handleRegister}>회원가입</a>
