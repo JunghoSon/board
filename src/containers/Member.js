@@ -1,21 +1,21 @@
 import React, { Component } from 'react';
 import { Header } from 'components';
 import { connect } from 'react-redux';
-import { 
+import {
     memberLoginRequest,
     memberRegisterRequest,
     memberCheckIdRequest,
     memberCheckEmailRequest
 } from 'actions/member';
-    
+
 class Member extends Component {
     constructor(props){
         super(props);
     }
-    
+
     render(){
         const { login, register, checkId, checkEmail, memberLoginRequest, memberRegisterRequest, memberCheckIdRequest, memberCheckEmailRequest } = this.props;
-        
+
         return (
             <div>
                 <h2>Member</h2>

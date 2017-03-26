@@ -24,7 +24,6 @@ const Member = new Schema({
 });
 
 Member.statics.create = function(id, password, email){
-    console.log(email);
     const encrypted = crypto.createHmac('sha1', config.secret)
                             .update(password)
                             .digest('base64');

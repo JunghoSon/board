@@ -21,6 +21,11 @@ const initialState = {
         status: '',
         data: {},
         error: {}
+    },
+    checkToken: {
+        status: '',
+        data: {},
+        error: {}
     }
 };
 
@@ -102,6 +107,26 @@ export default function member(state = initialState, action){
         case types.MEMBER_CHECKEMAIL_FAILURE:
             return update(state, {
                 checkEmail: {
+                    status: {$set: 'FAILURE'},
+                    error: {$set: action.error}
+                }
+            });
+        case types.MEMBER_CHECKTOKEN:
+            return update(state, {
+                checkToken: {
+                    status : {$set: 'WAITING'}
+                }
+            });
+        case types.MEMBER_CHECKTOKEN_SUCCESS:
+            return update(state, {
+                checkToken: {
+                    status: {$set: 'SUCCESS'},
+                    data: {$set: action.data}
+                }
+            });
+        case types.MEMBER_CHECKTOKEN_FAILURE:
+            return update(state, {
+                checkToken: {
                     status: {$set: 'FAILURE'},
                     error: {$set: action.error}
                 }

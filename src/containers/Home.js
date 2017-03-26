@@ -1,53 +1,73 @@
 import React, { Component } from 'react';
+import { Login } from 'components';
 import { connect } from 'react-redux';
 import { Link } from 'react-router';
+import {
+    memberLoginRequest,
+    memberCheckTokenRequest
+ } from 'actions/member';
 
 class Home extends Component {
     constructor(props){
         super(props);
 
         this.state = {
-            id: '',
-            password: ''
+            isCheck: false,
+            isLogin: false
         };
-
-        this.handleChange = this.handleChange.bind(this);
     }
 
-    handleChange(e){
-        let name = e.target.name;
-        let value = e.target.value;
+    componentDidMount(){
+        let token = localStorage.getItem('tokenHeyf');
 
-        this.setState({
-            [name]: value
-        });
+        if( token !== null){
+            //token 유효성 체크
+            this.checkLoggedIn(token);
+        }else{
+            this.setState({
+                isCheck: true
+            });
+        }
     }
 
-    handleClick(){
-        let id = this.state.id;
-        let pw = this.state.pw;
+    componentWillReceiveProps(nextProps){
+        if(this.props.login.data.token !== nextProps.login.data.token){
+            this.checkLoggedIn(nextProps.login.data.token);
+        }
+    }
 
-        this.props.memberLoginRequest(id, pw)
+    checkLoggedIn(token){
+        this.props.memberCheckTokenRequest(token)
             .then(() => {
-                //토큰 처리
-            })
-            .catch(() => {
-                //에러 처리
+                if(this.props.checkToken.status === 'SUCCESS'){
+                    this.setState({
+                        isCheck: true,
+                        isLogin: true
+                    });
+                }else{
+                    this.setState({
+                        isCheck: true,
+                        isLogin: false
+                    });
+                }
             });
     }
 
     render(){
+        let loginForm = (
+            <Login login={ this.props.login } memberLoginRequest={ this.props.memberLoginRequest } />
+        );
+
+        let userInfo = (
+            <p>{ this.props.checkToken.status === 'SUCCESS' ? this.props.checkToken.data.info.id : '' }님 환영 합니다!!!</p>
+        );
+
         return (
             <div>
                 <h2>Home</h2>
-                <form>
-                    <ul>
-                        <li><input type="text" name="id" id="id" className="id" placeholder="아이디" title="비밀번호" value={this.state.id} onChange={this.handleChange} /></li>
-                        <li><input type="password" name="password" id="password" className="password" placeholder="비밀번호" title="비밀번호" value={this.state.password} onChange={this.handleChange} /></li>
-                    </ul>
-                    <a onClick={this.handleClick}>로그인</a>
-                    <Link to="/member/register">회원가입</Link>
-                </form>
+                <div>
+                    { this.state.isCheck && this.state.isLogin ? userInfo : loginForm }
+                </div>
             </div>
         );
     }
@@ -55,14 +75,18 @@ class Home extends Component {
 
 const mapStateToProps = (state) => {
     return {
-        login: state.member.login
+        login: state.member.login,
+        checkToken: state.member.checkToken
     };
 };
 
 const mapDispatchToProps = (dispatch) => {
     return {
         memberLoginRequest: (id, password) => {
-            dispatch(memberLoginRequest(id, pw));
+            return dispatch(memberLoginRequest(id, password));
+        },
+        memberCheckTokenRequest: (token) => {
+            return dispatch(memberCheckTokenRequest(token));
         }
     };
 }

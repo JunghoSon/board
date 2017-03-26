@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { Link } from 'react-router';
+import { Link, browserHistory } from 'react-router';
 
 class Login extends Component {
     constructor(props){
@@ -11,8 +11,9 @@ class Login extends Component {
         };
 
         this.handleChange = this.handleChange.bind(this);
+        this.handleClick = this.handleClick.bind(this);
     }
-    
+
     handleChange(e){
         let name = e.target.name;
         let value = e.target.value;
@@ -24,17 +25,19 @@ class Login extends Component {
 
     handleClick(){
         let id = this.state.id;
-        let pw = this.state.pw;
+        let password = this.state.password;
 
-        this.props.memberLoginRequest(id, pw)
+        this.props.memberLoginRequest(id, password)
             .then(() => {
                 //토큰 처리
-            })
-            .catch(() => {
-                //에러 처리
+                localStorage.setItem('tokenHeyf', this.props.login.data.token);
+                
+                if(browserHistory.getCurrentLocation().pathname.indexOf('login') > 0){
+                    browserHistory.push('/');
+                }
             });
     }
-    
+
     render(){
         return (
             <div>

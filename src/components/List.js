@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import { Tbl, Pagenation } from 'components';
-import { Link } from 'react-router';
+import { Link, browserHistory } from 'react-router';
 
 class List extends Component {
     componentDidMount(){
@@ -13,21 +13,21 @@ class List extends Component {
                 browserHistory.push('/err');
             });
     }
-    
+
     componentWillReceiveProps(nextProps){
         if(this.props.params.page !== nextProps.params.page){
             this.props.onList(nextProps.params.page);
         }
     }
-    
+
     shouldComponentUpdate(nextProps, nextState){
         let update = JSON.stringify(this.props.list.items) !== JSON.stringify(nextProps.list.items);
-        return update;    
+        return update;
     }
-    
+
     render(){
         let { items, pagenation } = this.props.list;
-        
+
         return (
             <div>
                 <h3>리스트</h3>

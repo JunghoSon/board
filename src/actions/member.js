@@ -10,7 +10,10 @@ import {
     MEMBER_CHECKEMAIL_FAILURE,
     MEMBER_REGISTER,
     MEMBER_REGISTER_SUCCESS,
-    MEMBER_REGISTER_FAILURE
+    MEMBER_REGISTER_FAILURE,
+    MEMBER_CHECKTOKEN,
+    MEMBER_CHECKTOKEN_SUCCESS,
+    MEMBER_CHECKTOKEN_FAILURE
 } from './ActionTypes';
 import axios from 'axios';
 
@@ -18,11 +21,12 @@ export function memberLoginRequest(id, password){
     return (dispatch) => {
         dispatch(memberLogin);
 
-        return axios.post('/member/login', { id, password })
+        return axios.post('/api/member/login', { id, password })
                     .then((response) => {
                         dispatch(memberLoginSuccess(response.data));
                     })
                     .catch((error) => {
+                        console.log(error);
                         dispatch(memberLoginFailure(error.response.data));
                     });
     };
@@ -51,7 +55,7 @@ export function memberLoginFailure(error){
 export function memberCheckIdRequest(id){
     return (dispatch) => {
         dispatch(memberCheckId());
-        
+
         return axios.post('/api/member/checkId', { id })
                     .then((response) => {
                         dispatch(memberCheckIdSuccess(response.data));
@@ -85,7 +89,7 @@ export function memberCheckIdFailure(error){
 export function memberCheckEmailRequest(email){
     return (dispatch) => {
         dispatch(memberCheckEmail());
-        
+
         return axios.post('/api/member/checkEmail', { email })
                     .then((response) => {
                         dispatch(memberCheckEmailSuccess(response.data));
@@ -116,10 +120,47 @@ export function memberCheckEmailFailure(error){
     };
 }
 
+export function memberCheckTokenRequest(token){
+    return (dispatch) => {
+        dispatch(memberCheckToken());
+
+        let instance = axios.create();
+        instance.defaults.headers.common['x-access-token'] = token;
+
+        return instance.get('/api/member/checkToken')
+                    .then((response) => {
+                        dispatch(memberCheckTokenSuccess(response.data));
+                    })
+                    .catch((error) => {
+                        dispatch(memberCheckTokenFailure(error.response.data));
+                    });
+    };
+}
+
+export function memberCheckToken(){
+    return {
+        type: MEMBER_CHECKTOKEN
+    };
+}
+
+export function memberCheckTokenSuccess(data){
+    return {
+        type: MEMBER_CHECKTOKEN_SUCCESS,
+        data: data
+    };
+}
+
+export function memberCheckTokenFailure(error){
+    return {
+        type: MEMBER_CHECKTOKEN_FAILURE,
+        error: error
+    };
+}
+
 export function memberRegisterRequest(id, password, email){
     return (dispatch) => {
         dispatch(memberRegister());
-        
+
         return axios.post('/api/member/register', { id, password, email })
                     .then((response) => {
                         dispatch(memberRegisterSuccess(response.data));
