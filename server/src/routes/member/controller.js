@@ -96,14 +96,14 @@ exports.checkToken = (req, res) => {
     });
 
     const respond = (decoded) => {
-        console.log(decoded);
         res.json({
             info: decoded
         });
     }
 
     const onError = (error) => {
-        res.status().json({
+        console.log(error);
+        res.status(403).json({
             message: error.message
         });
     }
@@ -118,7 +118,7 @@ exports.login = (req, res) => {
 
     const verify = (member) => {
         if(!member){
-            throw new Error('login failed');
+            throw new Error('존재하지 않는 아이디 입니다.');
         }else{
             if(member.verify(password)){
                 const p = new Promise((resolve, reject) => {

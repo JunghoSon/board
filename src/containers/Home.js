@@ -13,7 +13,8 @@ class Home extends Component {
 
         this.state = {
             isCheck: false,
-            isLogin: false
+            isLogin: false,
+            pageName: 'home'
         };
     }
 
@@ -55,7 +56,7 @@ class Home extends Component {
 
     render(){
         let loginForm = (
-            <Login login={ this.props.login } memberLoginRequest={ this.props.memberLoginRequest } />
+            <Login login={ this.props.login } pageName={this.state.pageName} memberLoginRequest={ this.props.memberLoginRequest } />
         );
 
         let userInfo = (
@@ -64,9 +65,10 @@ class Home extends Component {
 
         return (
             <div>
-                <h2>Home</h2>
+                <h2 className="blind">Home</h2>
                 <div>
-                    { this.state.isCheck && this.state.isLogin ? userInfo : loginForm }
+                    { this.state.isCheck && !this.state.isLogin ? loginForm : undefined }
+                    { this.state.isCheck && this.state.isLogin ? userInfo : undefined }
                 </div>
             </div>
         );

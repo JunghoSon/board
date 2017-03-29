@@ -23,6 +23,8 @@ table{border-collapse:collapse;border-spacing:0}
 input::-ms-clear{display:none}
 
 .blind, legend{display:block;overflow:hidden;position:absolute;top:-1000em;left:0}
+.btnS{display:inline-block;padding:3px;border:1px solid #ccc;border-radius:2px}
+.border_none{border:0 none !important}
 
 /* layout */
 .wrp_header{padding:25px 0 10px;border-bottom:2px solid #333;text-align:left}
@@ -30,15 +32,22 @@ input::-ms-clear{display:none}
 .header:after{content:'';display:block;clear:both}
 .header h1{float:left}
 .header .gnb{float:left;margin-left:30px}
-.header .gnb li{float:left;margin-left:10px}
+.header .gnb li{float:left;margin-left:30px}
 .header .gnb li:first-child{margin-left:0}
 
-.container{width:800px;padding:40px;margin:0 auto;text-align:left}
-.container h2{padding-bottom:20px;font-size:18px;font-weight:bold;text-decoration:underline}
-.container h3{padding-bottom:10px;font-size:14px;font-weight:bold}
+.container{width:800px;padding-top:50px;margin:0 auto;text-align:left}
+h2{padding-bottom:20px;font-size:24px;font-weight:bold}
+
+.wrp_content:after{content:'';display:block;clear:both}
+.aside{float:left;width:180px}
+.aside .user_info{padding:5px;margin-bottom:10px;background:#f9f9f9;border:1px solid #ccc}
+.aside .lnb li{padding-bottom:10px}
+.aside .gdn{width:100%;height:200px;line-height:200px;margin-top:20px;border:1px solid #ccc;background:#f9f9f9;text-align:center}
+.content{float:right;width:590px}
+h3{padding-bottom:10px;border-bottom:1px solid #333;font-size:14px;font-weight:bold}
 caption{overflow:hidden;width:1px;height:1px;*height:0;padding:0;margin-top:-1px;font-size:0;line-height:0;text-indent:-999px}
-.bbs1{width:100%}
-.bbs1 th{height:30px;border-top:1px solid #666;border-bottom:2px solid #666;text-align:center}
+.bbs1{width:100%;margin-top:25px}
+.bbs1 th{height:30px;border-bottom:2px solid #666;text-align:center}
 .bbs1 td{height:30px;border-bottom:1px solid #666;text-align:center}
 .bbs1 td.tit{padding-left:15px;text-align:left}
 
@@ -58,6 +67,14 @@ caption{overflow:hidden;width:1px;height:1px;*height:0;padding:0;margin-top:-1px
 .bbs2 input{width:500px}
 .bbs2 textarea{height:200px}
 
+.frm_register li{margin-bottom:5px}
 .frm_register li span{padding-left:5px}
 .fcg{color:green}
 .fcr{color:red}
+
+.wrp_member{width:190px;padding:20px;margin:100px auto;border:1px solid #ccc}
+.frm_login{position:relative;width:180px;padding-bottom:10px}
+.frm_login li{margin-top:5px}
+.frm_login li:first-child{margin-top:0}
+.frm_login .btn_login{position:absolute;right:0;top:25px;height:37px;line-height:37px}
+.btn_acc, .btn_cancel{margin-left:3px}

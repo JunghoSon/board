@@ -30,7 +30,6 @@ class List extends Component {
 
         return (
             <div>
-                <h3>리스트</h3>
                 <Tbl items={items}/>
                 <p className="wrp_btn_r"><Link to="/board/write" className="btn">글쓰기</Link></p>
                 <Pagenation prev={pagenation.prevPage}

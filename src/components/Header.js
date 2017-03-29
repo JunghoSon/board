@@ -6,10 +6,12 @@ class Header extends Component {
         return (
             <div className="wrp_header">
                 <div className="header">
-                    <h1>TEST BOARD</h1>
+                    <h1>TEST Hey Friends</h1>
                     <ul className="gnb">
-                        <li><Link to="/">Home</Link></li>
-                        <li><Link to="/board/list">Board</Link></li>
+                        <li><Link to="/real">Real Time Talk</Link></li>
+                        <li><Link to="/friends">Find Friends</Link></li>
+                        <li><Link to="/my">My Room</Link></li>
+                        <li><Link to="/board">Boards</Link></li>
                     </ul>
                 </div>
             </div>

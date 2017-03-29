@@ -22,6 +22,7 @@ class Register extends Component {
         this.handleCheckPasswordConfirm = this.handleCheckPasswordConfirm.bind(this);
         this.handleCheckEmail = this.handleCheckEmail.bind(this);
         this.handleRegister = this.handleRegister.bind(this);
+        this.handleBack = this.handleBack.bind(this);
     }
     
     handleChange(e){
@@ -146,6 +147,10 @@ class Register extends Component {
             });
         
     }
+    
+    handleBack(){
+        browserHistory.goBack();
+    }
         
     render(){
         const notice = [
@@ -163,7 +168,7 @@ class Register extends Component {
         
         return (    
             <div>
-                <h3>login</h3>
+                <h3 className="border_none">회원가입</h3>
                 <form>
                     <ul className="frm_register">
                         <li>
@@ -196,8 +201,8 @@ class Register extends Component {
                             <span className={ this.state.checkStatusEmail === 9 ? 'fcg' : 'fcr' }>{ notice[this.state.checkStatusEmail] }</span>
                         </li>
                     </ul>
-                    <a onClick={this.handleRegister}>회원가입</a>
-                    <Link to="/member/login">로그인</Link>
+                    <a onClick={this.handleRegister} className="btnS">회원가입</a>
+                    <a onClick={this.handleBack} className="btnS btn_cancel">취소</a>
                 </form>
             </div>
         );

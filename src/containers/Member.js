@@ -18,7 +18,7 @@ class Member extends Component {
 
         return (
             <div>
-                <h2>Member</h2>
+                <h2 className="blind">Member</h2>
                 {React.cloneElement(this.props.children, { login, register, checkId, checkEmail, memberLoginRequest, memberRegisterRequest, memberCheckIdRequest, memberCheckEmailRequest })}
             </div>
         );

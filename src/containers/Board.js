@@ -1,14 +1,35 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import { boardListRequest, boardWriteRequest, boardDetailRequest } from 'actions/board';
+import { memberCheckTokenRequest } from 'actions/member';
+import { Aside } from 'components';
 
 class Board extends Component {
     constructor(props){
         super(props);
         
+        this.state = {
+            pageName: 'boards'
+        };
+        
         this.handleList = this.handleList.bind(this);
         this.handleWrite = this.handleWrite.bind(this);
         this.handleDetail = this.handleDetail.bind(this);
+    }
+    
+    componentWillMount(){
+        let token = localStorage.getItem('tokenHeyf');
+
+        this.checkLoggedIn(token);
+    }
+    
+    checkLoggedIn(token){
+        this.props.memberCheckTokenRequest(token)
+            .then(() => {
+                if(this.props.checkToken.status === 'SUCCESS'){
+                    
+                }
+            });
     }
     
     handleList(page){
@@ -29,10 +50,18 @@ class Board extends Component {
         const onWrite = this.handleWrite;
         const onDetail = this.handleDetail;
         
+        let userInfo = (this.props.checkToken.status === 'SUCCESS') ? this.props.checkToken : null;
+        
         return (
             <div>
-                <h2>Board</h2>
-                {React.cloneElement(this.props.children, {list, write, detail, onList, onWrite, onDetail})}
+                <h2 className="blind">Board</h2>
+                <div className="wrp_content">
+                    <Aside pageName={this.state.pageName} userInfo={userInfo}/>
+                    <div className="content">
+                        <h3>sample list</h3>
+                        {React.cloneElement(this.props.children, {list, write, detail, onList, onWrite, onDetail})}
+                    </div>
+                </div>
             </div>
         );
     }
@@ -42,7 +71,8 @@ const mapStateToProps = (state) => {
     return {
         list: state.board.list,
         write: state.board.write,
-        detail: state.board.detail
+        detail: state.board.detail,
+        checkToken: state.member.checkToken
     };
 };
 
@@ -56,6 +86,9 @@ const mapDispatchToProps = (dispatch) => {
         },
         boardDetailRequest: (id) => {
             return dispatch(boardDetailRequest(id));
+        },
+        memberCheckTokenRequest: (token) => {
+            return dispatch(memberCheckTokenRequest(token));
         }
     };
 };
