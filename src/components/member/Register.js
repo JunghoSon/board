@@ -221,15 +221,9 @@ Register.defaultProps = {
     register: {},
     checkId: {},
     checkEmail: {},
-    memberRegisterRequest: () => {
-        console.log('Register func is not defined');
-    },
-    memberCheckIdRequest: () => {
-        console.log('CheckId func is not defined');
-    },
-    memberCheckEmailRequest: () => {
-        console.log('CheckEmail func is not defined');
-    }
+    memberRegisterRequest: () => {},
+    memberCheckIdRequest: () => {},
+    memberCheckEmailRequest: () => {}
 };
 
 export default Register;

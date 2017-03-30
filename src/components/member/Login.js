@@ -82,9 +82,7 @@ Login.propTypes = {
 Login.defaultProps = {
     pageName: 'member',
     login: {},
-    memberLoginRequest: () => {
-        console.log('Login func is not defined');
-    }
+    memberLoginRequest: () => {}
 };
 
 export default Login;

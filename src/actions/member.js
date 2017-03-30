@@ -26,7 +26,6 @@ export function memberLoginRequest(id, password){
                         dispatch(memberLoginSuccess(response.data));
                     })
                     .catch((error) => {
-                        console.log(error);
                         dispatch(memberLoginFailure(error.response.data));
                     });
     };
@@ -46,6 +45,7 @@ export function memberLoginSuccess(data){
 }
 
 export function memberLoginFailure(error){
+    console.log(error);
     return {
         type: MEMBER_LOGIN_FAILURE,
         error: error

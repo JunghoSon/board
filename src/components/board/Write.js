@@ -90,9 +90,7 @@ Write.propTypes = {
 
 Write.defaultProps = {
     list: {},
-    onWrite: () => {
-        console.log('Write func is not defined');
-    }
+    onWrite: () => {}
 };
 
 export default Write;

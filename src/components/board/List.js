@@ -48,9 +48,7 @@ List.propTypes = {
 
 List.defaultProps = {
     list: {},
-    onList: () => {
-        console.log('List func is not defined');
-    }
+    onList: () => {}
 };
 
 export default List;

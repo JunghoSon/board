@@ -78,3 +78,6 @@ caption{overflow:hidden;width:1px;height:1px;*height:0;padding:0;margin-top:-1px
 .frm_login li:first-child{margin-top:0}
 .frm_login .btn_login{position:absolute;right:0;top:25px;height:37px;line-height:37px}
 .btn_acc, .btn_cancel{margin-left:3px}
+
+.frm_modify{padding-top:25px}
+.frm_modify li{margin-bottom:8px}

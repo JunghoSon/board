@@ -58,9 +58,7 @@ Detail.propTypes = {
 
 Detail.defaultProps = {
     detail: {},
-    onDetail: () => {
-        console.log('Detail func is not defined');
-    }
+    onDetail: () => {}
 };
 
 export default Detail;

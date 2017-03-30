@@ -20,8 +20,7 @@ exports.register = (req, res) => {
 
     const onError = (error) => {
         res.status(403).json({
-            message: error.message,
-            isId: true
+            message: error.message
         });
     }
 

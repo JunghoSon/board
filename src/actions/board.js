@@ -100,7 +100,6 @@ export function boardDetail(){
 }
 
 export function boardDetailSuccess(board){
-    console.log(board);
     return {
         type: BOARD_DETAIL_SUCCESS,
         board: board
