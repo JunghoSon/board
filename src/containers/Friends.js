@@ -28,13 +28,11 @@ class Friends extends Component {
     }
     
     render(){
-        let userInfo = (this.props.checkToken.status === 'SUCCESS') ? this.props.checkToken : null;
-        
         return (
             <div>
                 <h2 className="blind">Find Friends</h2>
                 <div className="wrp_content">
-                    <Aside pageName={this.state.pageName} userInfo={null} userInfo={ userInfo }/>
+                    <Aside pageName={this.state.pageName} userInfo={null} userInfo={ this.props.checkToken }/>
                     <div className="content">
                         <h3>Find Friends 준비중...</h3>
                     </div>

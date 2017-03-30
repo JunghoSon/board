@@ -6,6 +6,7 @@ class EditAccount extends Component {
         super(props);
         
         this.state = {
+            id: '',
             password_old: '',
             password: '',
             password_confirm: '',
@@ -25,19 +26,19 @@ class EditAccount extends Component {
         this.handleBack = this.handleBack.bind(this);
     }
     
-    componentWillMount(){
-        let token = localStorage.getItem('tokenHeyf');
-
-        if( token !== null){
-            this.checkLoggedIn(token);
-        }else{
-            alert('로그인 후 이용 가능한 서비스 입니다.');
-            
-            browserHistory.push('/member/login');
-            
-            this.render = () => {
-                return false;
-            }
+    componentDidMount(){
+        this.setState({
+            id: this.props.checkToken.data.info.id,
+            email: this.props.checkToken.data.info.email
+        });
+    }
+    
+    componentWillReceiveProps(nextProps){
+        if(this.props.checkToken.status !== nextProps.checkToken.status){
+            this.setState({
+                id: nextProps.checkToken.data.info.id,
+                email: nextProps.checkToken.data.info.email
+            });
         }
     }
     
@@ -46,6 +47,7 @@ class EditAccount extends Component {
             .then(() => {
                 if(this.props.checkToken.status === 'SUCCESS'){
                     this.setState({
+                        id: this.props.checkToken.data.info.id,
                         email: this.props.checkToken.data.info.email
                     });
                 }else{
@@ -151,7 +153,8 @@ class EditAccount extends Component {
     }
     
     handleModify(){
-        let { id, password, password_confirm, email } = this.state;
+        let { id, password_old, password, email } = this.state;
+        console.log(email);
         
         this.handleCheckPasswordOld()
             .then(this.handleCheckPassword)
@@ -159,11 +162,20 @@ class EditAccount extends Component {
             .then(this.handleCheckEmail)
             .then(() => {
                 if(this.state.checkStatusPasswordOld === 0 && this.state.checkStatusPassword === 0 && this.state.checkStatusPasswordConfirm === 0 && this.state.checkStatusEmail === 9){
-                    this.props.memberModifyRequest(password, email)
+                    this.props.memberModifyRequest(id, password_old, password, email)
                         .then((data) => {
                             if(this.props.modify.status === 'SUCCESS'){
                                 alert('회원정보 수정이 성공적으로 이루어 졌습니다.');
+                                localStorage.setItem('tokenHeyf', this.props.modify.data.token);
+                                this.setState({
+                                    password_old: '',
+                                    password: '',
+                                    password_confirm: ''
+                                });
+                                this.checkLoggedIn(this.props.modify.data.token);
                                 //browserHistory.push('/member/login');
+                            }else{
+                                //에러처리 필요
                             }
                         });
                 }

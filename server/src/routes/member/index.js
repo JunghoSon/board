@@ -8,5 +8,6 @@ router.post('/checkId', controller.checkId);
 router.post('/checkEmail', controller.checkEmail);
 router.get('/checkToken', controller.checkToken);
 router.post('/login', controller.login);
+router.post('/modify', controller.modify);
 
 export default router;

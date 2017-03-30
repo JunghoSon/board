@@ -13,7 +13,10 @@ import {
     MEMBER_REGISTER_FAILURE,
     MEMBER_CHECKTOKEN,
     MEMBER_CHECKTOKEN_SUCCESS,
-    MEMBER_CHECKTOKEN_FAILURE
+    MEMBER_CHECKTOKEN_FAILURE,
+    MEMBER_MODIFY,
+    MEMBER_MODIFY_SUCCESS,
+    MEMBER_MODIFY_FAILURE
 } from './ActionTypes';
 import axios from 'axios';
 
@@ -187,6 +190,40 @@ export function memberRegisterSuccess(data){
 export function memberRegisterFailure(error){
     return {
         type: MEMBER_REGISTER_FAILURE,
+        error: error
+    };
+}
+
+export function memberModifyRequest(id, password_old, password, email){
+    return (dispatch) => {
+        dispatch(memberRegister());
+        console.log(id, password_old, password, email);
+        return axios.post('/api/member/modify', { id, password_old, password, email })
+                    .then((response) => {
+                        dispatch(memberModifySuccess(response.data));
+                    })
+                    .catch((error) => {
+                        dispatch(memberModifyFailure(error.response.data));
+                    });
+    };
+}
+
+export function memberModify(){
+    return {
+        type: MEMBER_MODIFY
+    };
+}
+
+export function memberModifySuccess(data){
+    return {
+        type: MEMBER_MODIFY_SUCCESS,
+        data: data
+    };
+}
+
+export function memberModifyFailure(error){
+    return {
+        type: MEMBER_MODIFY_FAILURE,
         error: error
     };
 }

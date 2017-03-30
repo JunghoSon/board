@@ -4,12 +4,12 @@ import { Lnb } from 'components';
 class Aside extends Component {
     render(){
         let userInfo = (
-            <p className="user_info">{ this.props.userInfo !== null ? this.props.userInfo.data.info.id : '' }님 환영 합니다!!!</p>
+            <p className="user_info">{ this.props.userInfo.data.info.id }님 환영 합니다!!!</p>
         );
         
         return (
             <div className="aside">
-                { this.props.userInfo !== null ? userInfo : undefined }
+                { this.props.userInfo.data.info.id !== '' ? userInfo : undefined }
                 <Lnb pageName={this.props.pageName}/>
                 <div className="gdn">GDN BANNER</div>
             </div>

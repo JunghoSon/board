@@ -2,7 +2,7 @@ import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import { Link, browserHistory } from 'react-router';
 import { Aside } from 'components';
-import { memberCheckTokenRequest, memberCheckEmailRequest } from 'actions/member';
+import { memberCheckTokenRequest, memberCheckEmailRequest, memberModifyRequest } from 'actions/member';
 
 class My extends Component {
     constructor(props){
@@ -43,16 +43,15 @@ class My extends Component {
     }
     
     render(){
-        const { checkToken, checkEmail, memberCheckTokenRequest, memberCheckEmailRequest } = this.props;
-        let userInfo = (this.props.checkToken.status === 'SUCCESS') ? this.props.checkToken : null;
+        const { checkToken, checkEmail, modify, memberCheckTokenRequest, memberCheckEmailRequest, memberModifyRequest } = this.props;
         
         return (
             <div>
                 <h2 className="blind">My Room</h2>
                 <div className="wrp_content">
-                    <Aside pageName={this.state.pageName} userInfo={userInfo}/>
+                    <Aside pageName={this.state.pageName} userInfo={this.props.checkToken}/>
                     <div className="content">
-                        {React.cloneElement(this.props.children, { checkToken, checkEmail, memberCheckTokenRequest, memberCheckEmailRequest })}
+                        {React.cloneElement(this.props.children, { checkToken, checkEmail, modify, memberCheckTokenRequest, memberCheckEmailRequest, memberModifyRequest })}
                     </div>
                 </div>
             </div>
@@ -63,7 +62,8 @@ class My extends Component {
 const mapStateToProps = (state) => {
     return {
         checkToken: state.member.checkToken,
-        checkEmail: state.member.checkEmail
+        checkEmail: state.member.checkEmail,
+        modify: state.member.modify
     };
 };
 
@@ -74,6 +74,9 @@ const mapDispatchToProps = (dispatch) => {
         },
         memberCheckEmailRequest: (email) => {
             return dispatch(memberCheckEmailRequest(email));
+        },
+        memberModifyRequest: (id, password_old, password, email) => {
+            return dispatch(memberModifyRequest(id, password_old, password, email));
         }
     };
 }

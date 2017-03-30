@@ -50,13 +50,11 @@ class Board extends Component {
         const onWrite = this.handleWrite;
         const onDetail = this.handleDetail;
         
-        let userInfo = (this.props.checkToken.status === 'SUCCESS') ? this.props.checkToken : null;
-        
         return (
             <div>
                 <h2 className="blind">Board</h2>
                 <div className="wrp_content">
-                    <Aside pageName={this.state.pageName} userInfo={userInfo}/>
+                    <Aside pageName={this.state.pageName} userInfo={ this.props.checkToken }/>
                     <div className="content">
                         <h3>sample list</h3>
                         {React.cloneElement(this.props.children, {list, write, detail, onList, onWrite, onDetail})}

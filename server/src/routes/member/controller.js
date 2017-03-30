@@ -164,3 +164,62 @@ exports.login = (req, res) => {
           .then(respond)
           .catch(onError);
 };
+
+exports.modify = (req, res) => {
+    const { id, password_old, password, email } = req.body;
+    const secret = req.app.get('jwt-secret');
+    
+    const modify = (member) => {
+        if(!member){
+            throw new Error('존재하지 않는 아이디 입니다.');
+        }else{
+            if(member.verify(password_old)){
+                return member.modify(password, email);
+            }else{
+                throw new Error('기존 비밀번호가 일치하지 않습니다.');
+            }
+        }
+    };
+    
+    const issue = (member) => {
+        const p = new Promise((resolve, reject) => {
+            jwt.sign(
+                {
+                    _id: member._id,
+                    id: member.id,
+                    email: member.email
+                },
+                secret,
+                {
+                    expiresIn: '1d',
+                    issuer: 'heyfriend.com',
+                    subject: 'userInfo'
+                }, (error, token) => {
+                    if(error) reject(error);
+                    resolve(token);
+                }
+            );
+        });
+
+        return p;
+    };
+    
+    const respond = (token) => {
+        res.json({
+            message: '성공적으로 회원정보를 변경 했습니다.',
+            token
+        });
+    }
+    
+    const onError = (error) => {
+        res.status(403).json({
+            message: error.message
+        });
+    }
+    
+    Member.findOneById(id)
+          .then(modify)
+          .then(issue)
+          .then(respond)
+          .catch(onError);
+};

@@ -41,13 +41,11 @@ class Real extends Component {
     }
     
     render(){
-        let userInfo = (this.props.checkToken.status === 'SUCCESS') ? this.props.checkToken : null;
-        
         return (
             <div>
                 <h2 className="blind">Real time talk</h2>
                 <div className="wrp_content">
-                    <Aside pageName={this.state.pageName} userInfo={userInfo}/>
+                    <Aside pageName={this.state.pageName} userInfo={this.props.checkToken}/>
                     <div className="content">
                         <h3>Real time talk 준비중...</h3>
                     </div>

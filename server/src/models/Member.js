@@ -38,6 +38,7 @@ Member.statics.create = function(id, password, email){
 };
 
 Member.statics.findOneById = function(id){
+    console.log(id);
     return this.findOne({
         id
     }).exec();
@@ -50,11 +51,23 @@ Member.statics.findOneByEmail = function(email){
 };
 
 Member.methods.verify = function(password){
+    console.log(password);
     const encrypted = crypto.createHmac('sha1', config.secret)
                             .update(password)
                             .digest('base64');
-
+    console.log(this.password);
+    console.log(encrypted);
     return this.password === encrypted;
 };
+
+Member.methods.modify = function(password, email){
+    const encrypted = crypto.createHmac('sha1', config.secret)
+                            .update(password)
+                            .digest('base64');
+    
+    this.password = encrypted;
+    this.email = email;
+    return this.save();
+}
 
 export default mongoose.model('Member', Member);
