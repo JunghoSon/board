@@ -11,7 +11,7 @@ class Login extends Component {
         };
 
         this.handleChange = this.handleChange.bind(this);
-        this.handleClick = this.handleClick.bind(this);
+        this.handleLogin = this.handleLogin.bind(this);
     }
 
     handleChange(e){
@@ -23,7 +23,7 @@ class Login extends Component {
         });
     }
 
-    handleClick(){
+    handleLogin(){
         let id = this.state.id;
         let password = this.state.password;
         
@@ -41,13 +41,13 @@ class Login extends Component {
             .then(() => {
                 //토큰 처리
                 if(this.props.login.status === 'SUCCESS'){
-                    localStorage.setItem('tokenHeyf', this.props.login.data.token);
+                    localStorage.setItem('tokenHeyf', this.props.login.token);
                     
                     if(browserHistory.getCurrentLocation().pathname.indexOf('login') > 0){
                         browserHistory.push('/');
                     }
                 }else{
-                    alert(this.props.login.error.message);
+                    alert(this.props.login.error);
                     browserHistory.push('/member/login');
                 }
             });
@@ -63,7 +63,7 @@ class Login extends Component {
                             <li><input type="text" name="id" id="id" className="id" placeholder="아이디" title="비밀번호" value={this.state.id} onChange={this.handleChange} ref={(input) => { this.idInput = input; }} /></li>
                             <li><input type="password" name="password" id="password" className="password" placeholder="비밀번호" title="비밀번호" value={this.state.password} onChange={this.handleChange} ref={(input) => { this.passwordInput = input; }} /></li>
                         </ul>
-                        <a onClick={this.handleClick} className="btnS btn_login">로그인</a>
+                        <a onClick={this.handleLogin} className="btnS btn_login">로그인</a>
                     </div>
                     <a className="btnS">아이디&middot;비밀번호 찾기</a>
                     <Link to="/member/register" className="btnS btn_acc">회원가입</Link>

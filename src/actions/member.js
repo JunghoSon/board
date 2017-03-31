@@ -48,7 +48,6 @@ export function memberLoginSuccess(data){
 }
 
 export function memberLoginFailure(error){
-    console.log(error);
     return {
         type: MEMBER_LOGIN_FAILURE,
         error: error

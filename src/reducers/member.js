@@ -4,38 +4,31 @@ import update from 'react-addons-update';
 const initialState = {
     login: {
         status: '',
-        data: {},
-        error: {}
+        token: '',
+        error: ''
     },
     register: {
         status: '',
-        data: {},
-        error: {}
+        error: ''
     },
     checkId: {
         status: '',
-        data: {},
-        error: {}
+        error: ''
     },
     checkEmail: {
         status: '',
-        data: {},
         error: {}
     },
     checkToken: {
         status: '',
-        data: {
-            info: {
-                id: '',
-                email: ''
-            }
-        },
+        id: '',
+        email: '',
         error: {}
     },
     modify: {
         status: '',
-        data: {},
-        error: {}
+        token:'',
+        error: ''
     }
 };
 
@@ -51,14 +44,14 @@ export default function member(state = initialState, action){
             return update(state, {
                 login: {
                     status: {$set: 'SUCCESS'},
-                    data: {$set: action.data}
+                    token: {$set: action.data.token}
                 }
             });
         case types.MEMBER_LOGIN_FAILURE:
             return update(state, {
                 login: {
                     status: {$set: 'FAILURE'},
-                    error: {$set: action.error}
+                    error: {$set: action.error.message}
                 }
             });
         case types.MEMBER_REGISTER:
@@ -70,15 +63,14 @@ export default function member(state = initialState, action){
         case types.MEMBER_REGISTER_SUCCESS:
             return update(state, {
                 register: {
-                    status: {$set: 'SUCCESS'},
-                    data: {$set: action.data}
+                    status: {$set: 'SUCCESS'}
                 }
             });
         case types.MEMBER_REGISTER_FAILURE:
             return update(state, {
                 register: {
                     status: {$set: 'FAILURE'},
-                    error: {$set: action.error}
+                    error: {$set: action.error.message}
                 }
             });
         case types.MEMBER_CHECKID:
@@ -90,15 +82,14 @@ export default function member(state = initialState, action){
         case types.MEMBER_CHECKID_SUCCESS:
             return update(state, {
                 checkId: {
-                    status: {$set: 'SUCCESS'},
-                    data: {$set: action.data}
+                    status: {$set: 'SUCCESS'}
                 }
             });
         case types.MEMBER_CHECKID_FAILURE:
             return update(state, {
                 checkId: {
                     status: {$set: 'FAILURE'},
-                    error: {$set: action.error}
+                    error: {$set: action.error.message}
                 }
             });
         case types.MEMBER_CHECKEMAIL:
@@ -110,15 +101,14 @@ export default function member(state = initialState, action){
         case types.MEMBER_CHECKEMAIL_SUCCESS:
             return update(state, {
                 checkEmail: {
-                    status: {$set: 'SUCCESS'},
-                    data: {$set: action.data}
+                    status: {$set: 'SUCCESS'}
                 }
             });
         case types.MEMBER_CHECKEMAIL_FAILURE:
             return update(state, {
                 checkEmail: {
                     status: {$set: 'FAILURE'},
-                    error: {$set: action.error}
+                    error: {$set: action.error.message}
                 }
             });
         case types.MEMBER_CHECKTOKEN:
@@ -131,14 +121,15 @@ export default function member(state = initialState, action){
             return update(state, {
                 checkToken: {
                     status: {$set: 'SUCCESS'},
-                    data: {$set: action.data}
+                    id: {$set: action.data.userInfo.id},
+                    email: {$set: action.data.userInfo.email}
                 }
             });
         case types.MEMBER_CHECKTOKEN_FAILURE:
             return update(state, {
                 checkToken: {
                     status: {$set: 'FAILURE'},
-                    error: {$set: action.error}
+                    error: {$set: action.error.message}
                 }
             });
         case types.MEMBER_MODIFY:
@@ -151,14 +142,14 @@ export default function member(state = initialState, action){
             return update(state, {
                 modify: {
                     status: {$set: 'SUCCESS'},
-                    data: {$set: action.data}
+                    token: {$set: action.data.token}
                 }
             });
         case types.MEMBER_MODIFY_FAILURE:
             return update(state, {
                 modify: {
                     status: {$set: 'FAILURE'},
-                    error: {$set: action.error}
+                    error: {$set: action.error.message}
                 }
             });
         default:

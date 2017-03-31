@@ -33,9 +33,7 @@ class My extends Component {
     checkLoggedIn(token){
         this.props.memberCheckTokenRequest(token)
             .then(() => {
-                if(this.props.checkToken.status === 'SUCCESS'){
-                    
-                }else{
+                if(this.props.checkToken.status === 'FAILURE'){
                     alert('세션이 종료 되었거나 유효하지 않은 접급 입니다. 다시 로그인해 주세요.');
                     browserHistory.push('/member/login');
                 }

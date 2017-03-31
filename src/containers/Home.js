@@ -18,7 +18,8 @@ class Home extends Component {
         };
     }
 
-    componentDidMount(){
+    //componentDidMount(){
+    componentWillMount(){
         let token = localStorage.getItem('tokenHeyf');
 
         if( token !== null){
@@ -32,8 +33,8 @@ class Home extends Component {
     }
 
     componentWillReceiveProps(nextProps){
-        if(this.props.login.data.token !== nextProps.login.data.token){
-            this.checkLoggedIn(nextProps.login.data.token);
+        if(this.props.login.token !== nextProps.login.token){
+            this.checkLoggedIn(nextProps.login.token);
         }
     }
 
@@ -60,7 +61,7 @@ class Home extends Component {
         );
 
         let userInfo = (
-            <p>{ this.props.checkToken.status === 'SUCCESS' ? this.props.checkToken.data.info.id : '' }님 환영 합니다!!!</p>
+            <p>{ this.props.checkToken.id } 님 환영 합니다!!!</p>
         );
 
         return (

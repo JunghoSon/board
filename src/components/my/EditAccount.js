@@ -23,21 +23,20 @@ class EditAccount extends Component {
         this.handleCheckPasswordConfirm = this.handleCheckPasswordConfirm.bind(this);
         this.handleCheckEmail = this.handleCheckEmail.bind(this);
         this.handleModify = this.handleModify.bind(this);
-        this.handleBack = this.handleBack.bind(this);
     }
     
     componentDidMount(){
         this.setState({
-            id: this.props.checkToken.data.info.id,
-            email: this.props.checkToken.data.info.email
+            id: this.props.checkToken.id,
+            email: this.props.checkToken.email
         });
     }
     
     componentWillReceiveProps(nextProps){
         if(this.props.checkToken.status !== nextProps.checkToken.status){
             this.setState({
-                id: nextProps.checkToken.data.info.id,
-                email: nextProps.checkToken.data.info.email
+                id: nextProps.checkToken.id,
+                email: nextProps.checkToken.email
             });
         }
     }
@@ -47,8 +46,8 @@ class EditAccount extends Component {
             .then(() => {
                 if(this.props.checkToken.status === 'SUCCESS'){
                     this.setState({
-                        id: this.props.checkToken.data.info.id,
-                        email: this.props.checkToken.data.info.email
+                        id: this.props.checkToken.id,
+                        email: this.props.checkToken.email
                     });
                 }else{
                     alert('세션이 종료 되었습니다. 다시 로그인 해 주세요.');
@@ -141,50 +140,53 @@ class EditAccount extends Component {
             return Promise.resolve(false);
         }
         
-        return this.props.memberCheckEmailRequest(email)
-                   .then(() => {
-                       let status = (this.props.checkEmail.status === 'SUCCESS') ? 9 : 7;
-                        
-                       this.setState({
-                           checkStatusEmail: status
+        if(email !== this.props.checkToken.email){
+            return this.props.memberCheckEmailRequest(email)
+                       .then(() => {
+                           let status = (this.props.checkEmail.status === 'SUCCESS') ? 9 : 7;
+                            
+                           this.setState({
+                               checkStatusEmail: status
+                           });
+                           return Promise.resolve(false);
                        });
-                       return Promise.resolve(false);
-                    });
+        }else{
+            return Promise.resolve(false);
+        }
     }
     
     handleModify(){
         let { id, password_old, password, email } = this.state;
-        console.log(email);
         
         this.handleCheckPasswordOld()
             .then(this.handleCheckPassword)
             .then(this.handleCheckPasswordConfirm)
             .then(this.handleCheckEmail)
             .then(() => {
-                if(this.state.checkStatusPasswordOld === 0 && this.state.checkStatusPassword === 0 && this.state.checkStatusPasswordConfirm === 0 && this.state.checkStatusEmail === 9){
+                if(this.state.checkStatusPasswordOld === 0 && this.state.checkStatusPassword === 0 && this.state.checkStatusPasswordConfirm === 0 && (this.state.checkStatusEmail === 9 || this.state.checkStatusEmail === 0)){
                     this.props.memberModifyRequest(id, password_old, password, email)
                         .then((data) => {
                             if(this.props.modify.status === 'SUCCESS'){
                                 alert('회원정보 수정이 성공적으로 이루어 졌습니다.');
-                                localStorage.setItem('tokenHeyf', this.props.modify.data.token);
+                                localStorage.setItem('tokenHeyf', this.props.modify.token);
                                 this.setState({
                                     password_old: '',
                                     password: '',
-                                    password_confirm: ''
+                                    password_confirm: '',
+                                    checkStatusPasswordOld: 0,
+                                    checkStatusPassword: 0,
+                                    checkStatusPasswordConfirm: 0,
+                                    checkStatusEmail: 0
                                 });
-                                this.checkLoggedIn(this.props.modify.data.token);
+                                this.checkLoggedIn(this.props.modify.token);
                                 //browserHistory.push('/member/login');
                             }else{
-                                //에러처리 필요
+                                alert(this.props.modify.error);
                             }
                         });
                 }
             });
         
-    }
-    
-    handleBack(){
-        browserHistory.goBack();
     }
     
     render(){
@@ -201,7 +203,6 @@ class EditAccount extends Component {
             '사용 가능한 이메일 입니다.',
             '기존 비밀번호와 동일한 비밀 번호 입니다.'
         ];
-        let userId = (this.props.checkToken.status === 'SUCCESS') ? this.props.checkToken.data.info.id : undefined;
         
         return (
             <div>
@@ -211,7 +212,7 @@ class EditAccount extends Component {
                         <fieldset>
                             <legend>회원정보 수정</legend>
                             <ul className="frm_modify">
-                                <li>{ userId }</li>
+                                <li>{ this.state.id }</li>
                                 <li>
                                     <input type="password" name="password_old" placeholder="기존 비밀번호" title="기존 비밀번호" 
                                            value={this.state.password_old} 
@@ -242,8 +243,7 @@ class EditAccount extends Component {
                                     <span className={ this.state.checkStatusEmail === 9 ? 'fcg' : 'fcr' }>{ notice[this.state.checkStatusEmail] }</span>
                                 </li>
                             </ul>
-                            <a onClick={this.handleModify} className="btnS">회원가입</a>
-                            <a onClick={this.handleBack} className="btnS btn_cancel">취소</a>
+                            <a onClick={this.handleModify} className="btnS">수정</a>
                         </fieldset>
                     </form>
                 </div>

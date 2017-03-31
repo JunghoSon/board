@@ -4,14 +4,6 @@ import jwt from 'jsonwebtoken';
 exports.register = (req, res) => {
     const { id, password, email  } = req.body;
 
-    const create = (member) => {
-        if(member){
-            throw new Error('이미 존재하는 id 입니다.');
-        }else{
-            return Member.create(id, password, email);
-        }
-    };
-
     const respond = () => {
         res.json({
             message: '회원가입이 성공적으로 이뤄졌습니다.'
@@ -24,8 +16,7 @@ exports.register = (req, res) => {
         });
     }
 
-    Member.findOneById(id)
-          .then(create)
+    Member.create(id, password, email)
           .then(respond)
           .catch(onError);
 };
@@ -96,12 +87,11 @@ exports.checkToken = (req, res) => {
 
     const respond = (decoded) => {
         res.json({
-            info: decoded
+            userInfo: decoded
         });
     }
 
     const onError = (error) => {
-        console.log(error);
         res.status(403).json({
             message: error.message
         });
@@ -148,7 +138,6 @@ exports.login = (req, res) => {
 
     const respond = (token) => {
         return res.json({
-            message: '로그인 성공',
             token
         });
     };
