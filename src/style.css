@@ -81,3 +81,10 @@ caption{overflow:hidden;width:1px;height:1px;*height:0;padding:0;margin-top:-1px
 
 .frm_modify{padding-top:25px}
 .frm_modify li{margin-bottom:8px}
+
+.frm_profile{padding:20px 0}
+.frm_profile li{margin-top:15px}
+.frm_profile li:first-child{margin-top:0}
+.frm_profile li .tit{font-size:16px;font-weight:bold}
+.frm_profile li span{display:block;margin-top:5px}
+.frm_profile li span:first-child{margin-top:0}

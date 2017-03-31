@@ -212,3 +212,80 @@ exports.modify = (req, res) => {
           .then(respond)
           .catch(onError);
 };
+
+exports.profile = (req, res) => {
+    const { id } = req.query;
+    
+    const respond = (member) => {
+        if(!member){
+            throw new Error('존재하지 않는 아이디 입니다.');
+        }else{
+            res.json({
+                gender: member.profile.gender,
+                age_y: member.profile.age_y,
+                age_m: member.profile.age_m,
+                age_d: member.profile.age_d,
+                nationality: member.profile.nationality,
+                live_nationality: member.profile.live_nationality,
+                live_city: member.profile.live_city,
+                lang1: member.profile.lang1,
+                lang2: member.profile.lang2,
+                lang3: member.profile.lang3, 
+                job: member.profile.job,
+                purpose: member.profile.purpose,
+                intro: member.profile.intro
+            });
+        }
+    }
+    
+    const onError = (error) => {
+        res.status(403).json({
+            message: error.message
+        });
+    }
+    
+    Member.findOneById(id)
+          .then(respond)
+          .catch(onError);
+};
+
+exports.profileModify = (req, res) => {
+    const { id, gender, age_y, age_m, age_d, nationality, live_nationality, live_city, lang1, lang2, lang3, job, purpose, intro } = req.body;
+    
+    const modify = (member) => {
+        if(!member){
+            throw new Error('존재하지 않는 아이디 입니다.');
+        }else{
+            return member.profileModify(gender, age_y, age_m, age_d, nationality, live_nationality, live_city, lang1, lang2, lang3, job, purpose, intro);
+        }
+    }
+    
+    const respond = (member) => {
+        res.json({
+            gender: member.profile.gender,
+            age_y: member.profile.age_y,
+            age_m: member.profile.age_m,
+            age_d: member.profile.age_d,
+            nationality: member.profile.nationality,
+            live_nationality: member.profile.live_nationality,
+            live_city: member.profile.live_city,
+            lang1: member.profile.lang1,
+            lang2: member.profile.lang2,
+            lang3: member.profile.lang3, 
+            job: member.profile.job,
+            purpose: member.profile.purpose,
+            intro: member.profile.intro
+        });
+    }
+    
+    const onError = (error) => {
+        res.status(403).json({
+            message: error.message
+        });
+    }
+    
+    Member.findOneById(id)
+          .then(modify)
+          .then(respond)
+          .catch(onError);
+};

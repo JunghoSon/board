@@ -16,7 +16,13 @@ import {
     MEMBER_CHECKTOKEN_FAILURE,
     MEMBER_MODIFY,
     MEMBER_MODIFY_SUCCESS,
-    MEMBER_MODIFY_FAILURE
+    MEMBER_MODIFY_FAILURE,
+    MEMBER_PROFILE,
+    MEMBER_PROFILE_SUCCESS,
+    MEMBER_PROFILE_FAILURE,
+    MEMBER_PROFILE_MODIFY,
+    MEMBER_PROFILE_MODIFY_SUCCESS,
+    MEMBER_PROFILE_MODIFY_FAILURE
 } from './ActionTypes';
 import axios from 'axios';
 
@@ -196,7 +202,7 @@ export function memberRegisterFailure(error){
 export function memberModifyRequest(id, password_old, password, email){
     return (dispatch) => {
         dispatch(memberRegister());
-        console.log(id, password_old, password, email);
+        
         return axios.post('/api/member/modify', { id, password_old, password, email })
                     .then((response) => {
                         dispatch(memberModifySuccess(response.data));
@@ -223,6 +229,74 @@ export function memberModifySuccess(data){
 export function memberModifyFailure(error){
     return {
         type: MEMBER_MODIFY_FAILURE,
+        error: error
+    };
+}
+
+export function memberProfileRequest(id){
+    return (dispatch) => {
+        dispatch(memberProfile());
+        
+        return axios.get('/api/member/profile?id=' + id)
+                    .then((response) => {
+                        dispatch(memberProfileSuccess(response.data));
+                    })
+                    .catch((error) => {
+                        dispatch(memberProfileFailure(error.response.data));
+                    });
+    };
+}
+
+export function memberProfile(){
+    return {
+        type: MEMBER_PROFILE
+    };
+}
+
+export function memberProfileSuccess(data){
+    return {
+        type: MEMBER_PROFILE_SUCCESS,
+        data: data
+    };
+}
+
+export function memberProfileFailure(error){
+    return {
+        type: MEMBER_PROFILE_FAILURE,
+        error: error
+    };
+}
+
+export function memberProfileModifyRequest(id, gender, age_y, age_m, age_d, nationality, live_nationality, live_city, lang1, lang2, lang3, job, purpose, intro){
+    return (dispatch) => {
+        dispatch(memberProfileModify());
+        
+        return axios.post('/api/member/profile', { id, gender, age_y, age_m, age_d, nationality, live_nationality, live_city, lang1, lang2, lang3, job, purpose, intro })
+                    .then((response) => {
+                        dispatch(memberProfileModifySuccess(response.data));
+                    })
+                    .catch((error) => {
+                        dispatch(memberProfileModifyFailure(error.response.data));
+                    });
+    };
+}
+
+export function memberProfileModify(){
+    return {
+        type: MEMBER_PROFILE_MODIFY
+    };
+}
+
+export function memberProfileModifySuccess(data){
+    return {
+        type: MEMBER_PROFILE_MODIFY_SUCCESS,
+        data: data
+    };
+}
+
+export function memberProfileModifyFailure(error){
+    return {
+        type: MEMBER_PROFILE_MODIFY_FAILURE,
         error: error
     };
 }

@@ -268,6 +268,6 @@ EditAccount.defaultProps = {
     memberCheckTokenRequest: () => {},
     memberCheckEmailRequest: () => {},
     memberModifyRequest: () => {}
-}
+};
 
 export default EditAccount;

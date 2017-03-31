@@ -2,7 +2,7 @@ import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import { Link, browserHistory } from 'react-router';
 import { Aside } from 'components';
-import { memberCheckTokenRequest, memberCheckEmailRequest, memberModifyRequest } from 'actions/member';
+import { memberCheckTokenRequest, memberCheckEmailRequest, memberModifyRequest, memberProfileRequest, memberProfileModifyRequest } from 'actions/member';
 
 class My extends Component {
     constructor(props){
@@ -41,7 +41,7 @@ class My extends Component {
     }
     
     render(){
-        const { checkToken, checkEmail, modify, memberCheckTokenRequest, memberCheckEmailRequest, memberModifyRequest } = this.props;
+        const { checkToken, checkEmail, modify, profile, memberCheckTokenRequest, memberCheckEmailRequest, memberModifyRequest, memberProfileRequest, memberProfileModifyRequest } = this.props;
         
         return (
             <div>
@@ -49,7 +49,7 @@ class My extends Component {
                 <div className="wrp_content">
                     <Aside pageName={this.state.pageName} userInfo={this.props.checkToken}/>
                     <div className="content">
-                        {React.cloneElement(this.props.children, { checkToken, checkEmail, modify, memberCheckTokenRequest, memberCheckEmailRequest, memberModifyRequest })}
+                        {React.cloneElement(this.props.children, { checkToken, checkEmail, modify, profile, memberCheckTokenRequest, memberCheckEmailRequest, memberModifyRequest, memberProfileRequest, memberProfileModifyRequest })}
                     </div>
                 </div>
             </div>
@@ -61,7 +61,8 @@ const mapStateToProps = (state) => {
     return {
         checkToken: state.member.checkToken,
         checkEmail: state.member.checkEmail,
-        modify: state.member.modify
+        modify: state.member.modify,
+        profile: state.member.profile
     };
 };
 
@@ -75,6 +76,12 @@ const mapDispatchToProps = (dispatch) => {
         },
         memberModifyRequest: (id, password_old, password, email) => {
             return dispatch(memberModifyRequest(id, password_old, password, email));
+        },
+        memberProfileRequest: (id) => {
+            return dispatch(memberProfileRequest(id));
+        },
+        memberProfileModifyRequest: (id, gender, age_y, age_m, age_d, nationality, live_nationality, live_city, lang1, lang2, lang3, job, purpose, intro) => {
+            return dispatch(memberProfileModifyRequest(id, gender, age_y, age_m, age_d, nationality, live_nationality, live_city, lang1, lang2, lang3, job, purpose, intro));
         }
     };
 }
