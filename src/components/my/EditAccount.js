@@ -34,10 +34,10 @@ class EditAccount extends Component {
     
     componentWillReceiveProps(nextProps){
         if(this.props.checkToken.status !== nextProps.checkToken.status){
-            this.setState({
-                id: nextProps.checkToken.id,
-                email: nextProps.checkToken.email
-            });
+            // this.setState({
+            //     id: nextProps.checkToken.id,
+            //     email: nextProps.checkToken.email
+            // });
         }
     }
     
@@ -156,7 +156,7 @@ class EditAccount extends Component {
     }
     
     handleModify(){
-        let { id, password_old, password, email } = this.state;
+        let { password_old, password, email } = this.state;
         
         this.handleCheckPasswordOld()
             .then(this.handleCheckPassword)
@@ -164,26 +164,39 @@ class EditAccount extends Component {
             .then(this.handleCheckEmail)
             .then(() => {
                 if(this.state.checkStatusPasswordOld === 0 && this.state.checkStatusPassword === 0 && this.state.checkStatusPasswordConfirm === 0 && (this.state.checkStatusEmail === 9 || this.state.checkStatusEmail === 0)){
-                    this.props.memberModifyRequest(id, password_old, password, email)
-                        .then((data) => {
-                            if(this.props.modify.status === 'SUCCESS'){
-                                alert('회원정보 수정이 성공적으로 이루어 졌습니다.');
-                                localStorage.setItem('tokenHeyf', this.props.modify.token);
-                                this.setState({
-                                    password_old: '',
-                                    password: '',
-                                    password_confirm: '',
-                                    checkStatusPasswordOld: 0,
-                                    checkStatusPassword: 0,
-                                    checkStatusPasswordConfirm: 0,
-                                    checkStatusEmail: 0
-                                });
-                                this.checkLoggedIn(this.props.modify.token);
-                                //browserHistory.push('/member/login');
-                            }else{
-                                alert(this.props.modify.error);
-                            }
-                        });
+                    let token = localStorage.getItem('tokenHeyf');
+                    
+                    if( token !== null){
+                        //token 유효성 체크
+                        this.props.memberModifyRequest(token, password_old, password, email)
+                            .then(() => {
+                                if(this.props.modify.status === 'SUCCESS'){
+                                    alert('회원정보 수정이 성공적으로 이루어 졌습니다.');
+                                    this.setState({
+                                        password_old: '',
+                                        password: '',
+                                        password_confirm: '',
+                                        checkStatusPasswordOld: 0,
+                                        checkStatusPassword: 0,
+                                        checkStatusPasswordConfirm: 0,
+                                        checkStatusEmail: 0
+                                    });
+                                    localStorage.setItem('tokenHeyf', this.props.modify.token);
+                                    this.checkLoggedIn(this.props.modify.token);
+                                    //browserHistory.push('/member/login');
+                                }else{
+                                    alert(this.props.modify.error);
+                                }
+                            });
+                    }else{
+                        alert('로그인 후 이용 가능한 서비스 입니다.');
+                        
+                        browserHistory.push('/member/login');
+                        
+                        this.render = () => {
+                            return false;
+                        }
+                    }
                 }
             });
         

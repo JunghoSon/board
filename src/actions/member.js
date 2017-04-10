@@ -199,11 +199,14 @@ export function memberRegisterFailure(error){
     };
 }
 
-export function memberModifyRequest(id, password_old, password, email){
+export function memberModifyRequest(token, password_old, password, email){
     return (dispatch) => {
         dispatch(memberRegister());
         
-        return axios.post('/api/member/modify', { id, password_old, password, email })
+        let instance = axios.create();
+        instance.defaults.headers.common['x-access-token'] = token;
+        
+        return instance.post('/api/member/modify', { password_old, password, email })
                     .then((response) => {
                         dispatch(memberModifySuccess(response.data));
                     })
@@ -233,11 +236,14 @@ export function memberModifyFailure(error){
     };
 }
 
-export function memberProfileRequest(id){
+export function memberProfileRequest(token){
     return (dispatch) => {
         dispatch(memberProfile());
         
-        return axios.get('/api/member/profile?id=' + id)
+        let instance = axios.create();
+        instance.defaults.headers.common['x-access-token'] = token;
+        
+        return instance.get('/api/member/profile')
                     .then((response) => {
                         dispatch(memberProfileSuccess(response.data));
                     })
@@ -267,11 +273,14 @@ export function memberProfileFailure(error){
     };
 }
 
-export function memberProfileModifyRequest(id, gender, age_y, age_m, age_d, nationality, live_nationality, live_city, lang1, lang2, lang3, job, purpose, intro){
+export function memberProfileModifyRequest(token, gender, age_y, age_m, age_d, nationality, live_nationality, live_city, lang1, lang2, lang3, job, purpose, intro){
     return (dispatch) => {
         dispatch(memberProfileModify());
         
-        return axios.post('/api/member/profile', { id, gender, age_y, age_m, age_d, nationality, live_nationality, live_city, lang1, lang2, lang3, job, purpose, intro })
+        let instance = axios.create();
+        instance.defaults.headers.common['x-access-token'] = token;
+        
+        return instance.post('/api/member/profile', { gender, age_y, age_m, age_d, nationality, live_nationality, live_city, lang1, lang2, lang3, job, purpose, intro })
                     .then((response) => {
                         dispatch(memberProfileModifySuccess(response.data));
                     })

@@ -176,7 +176,6 @@ export default function member(state = initialState, action){
                 }
             });
         case types.MEMBER_PROFILE_SUCCESS:
-            console.log(action.data);
             return update(state, {
                 profile: {
                     status: {$set: 'SUCCESS'},

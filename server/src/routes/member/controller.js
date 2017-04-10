@@ -70,35 +70,9 @@ exports.checkEmail = (req, res) => {
 };
 
 exports.checkToken = (req, res) => {
-    const token = req.headers['x-access-token'];
-
-    if(!token){
-        return res.status().json({
-            message: 'not logged in'
-        });
-    }
-
-    const p = new Promise((resolve, reject) => {
-        jwt.verify(token, req.app.get('jwt-secret'), (error, decoded) => {
-            if(error) reject(error);
-            resolve(decoded);
-        });
-    });
-
-    const respond = (decoded) => {
-        res.json({
-            userInfo: decoded
-        });
-    }
-
-    const onError = (error) => {
-        res.status(403).json({
-            message: error.message
-        });
-    }
-
-    p.then(respond)
-     .catch(onError);
+     res.json({
+         userInfo: req.decoded
+     });
 };
 
 exports.login = (req, res) => {
@@ -155,7 +129,8 @@ exports.login = (req, res) => {
 };
 
 exports.modify = (req, res) => {
-    const { id, password_old, password, email } = req.body;
+    const { id } = req.decoded;
+    const { password_old, password, email } = req.body;
     const secret = req.app.get('jwt-secret');
     
     const modify = (member) => {
@@ -214,26 +189,28 @@ exports.modify = (req, res) => {
 };
 
 exports.profile = (req, res) => {
-    const { id } = req.query;
+    const { id } = req.decoded;
     
     const respond = (member) => {
         if(!member){
             throw new Error('존재하지 않는 아이디 입니다.');
         }else{
+            let { profile } = member;
+            
             res.json({
-                gender: member.profile.gender,
-                age_y: member.profile.age_y,
-                age_m: member.profile.age_m,
-                age_d: member.profile.age_d,
-                nationality: member.profile.nationality,
-                live_nationality: member.profile.live_nationality,
-                live_city: member.profile.live_city,
-                lang1: member.profile.lang1,
-                lang2: member.profile.lang2,
-                lang3: member.profile.lang3, 
-                job: member.profile.job,
-                purpose: member.profile.purpose,
-                intro: member.profile.intro
+                gender: profile.gender,
+                age_y: profile.age_y,
+                age_m: profile.age_m,
+                age_d: profile.age_d,
+                nationality: profile.nationality,
+                live_nationality: profile.live_nationality,
+                live_city: profile.live_city,
+                lang1: profile.lang1,
+                lang2: profile.lang2,
+                lang3: profile.lang3, 
+                job: profile.job,
+                purpose: profile.purpose,
+                intro: profile.intro
             });
         }
     }
@@ -250,7 +227,8 @@ exports.profile = (req, res) => {
 };
 
 exports.profileModify = (req, res) => {
-    const { id, gender, age_y, age_m, age_d, nationality, live_nationality, live_city, lang1, lang2, lang3, job, purpose, intro } = req.body;
+    const { id } = req.decoded;
+    const { gender, age_y, age_m, age_d, nationality, live_nationality, live_city, lang1, lang2, lang3, job, purpose, intro } = req.body;
     
     const modify = (member) => {
         if(!member){

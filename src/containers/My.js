@@ -15,9 +15,8 @@ class My extends Component {
     
     componentWillMount(){
         let token = localStorage.getItem('tokenHeyf');
-        
+    
         if( token !== null){
-            //token 유효성 체크
             this.checkLoggedIn(token);
         }else{
             alert('로그인 후 이용 가능한 서비스 입니다.');
@@ -33,8 +32,9 @@ class My extends Component {
     checkLoggedIn(token){
         this.props.memberCheckTokenRequest(token)
             .then(() => {
-                if(this.props.checkToken.status === 'FAILURE'){
-                    alert('세션이 종료 되었거나 유효하지 않은 접급 입니다. 다시 로그인해 주세요.');
+                if(this.props.checkToken.status === 'SUCCESS'){
+                }else{
+                    alert('세션이 종료 되었습니다. 다시 로그인 해 주세요.');
                     browserHistory.push('/member/login');
                 }
             });
@@ -47,7 +47,7 @@ class My extends Component {
             <div>
                 <h2 className="blind">My Room</h2>
                 <div className="wrp_content">
-                    <Aside pageName={this.state.pageName} userInfo={this.props.checkToken}/>
+                    <Aside pageName={this.state.pageName} userInfo={ checkToken }/>
                     <div className="content">
                         {React.cloneElement(this.props.children, { checkToken, checkEmail, modify, profile, memberCheckTokenRequest, memberCheckEmailRequest, memberModifyRequest, memberProfileRequest, memberProfileModifyRequest })}
                     </div>
@@ -74,14 +74,14 @@ const mapDispatchToProps = (dispatch) => {
         memberCheckEmailRequest: (email) => {
             return dispatch(memberCheckEmailRequest(email));
         },
-        memberModifyRequest: (id, password_old, password, email) => {
-            return dispatch(memberModifyRequest(id, password_old, password, email));
+        memberModifyRequest: (token, password_old, password, email) => {
+            return dispatch(memberModifyRequest(token, password_old, password, email));
         },
-        memberProfileRequest: (id) => {
-            return dispatch(memberProfileRequest(id));
+        memberProfileRequest: (token) => {
+            return dispatch(memberProfileRequest(token));
         },
-        memberProfileModifyRequest: (id, gender, age_y, age_m, age_d, nationality, live_nationality, live_city, lang1, lang2, lang3, job, purpose, intro) => {
-            return dispatch(memberProfileModifyRequest(id, gender, age_y, age_m, age_d, nationality, live_nationality, live_city, lang1, lang2, lang3, job, purpose, intro));
+        memberProfileModifyRequest: (token, gender, age_y, age_m, age_d, nationality, live_nationality, live_city, lang1, lang2, lang3, job, purpose, intro) => {
+            return dispatch(memberProfileModifyRequest(token, gender, age_y, age_m, age_d, nationality, live_nationality, live_city, lang1, lang2, lang3, job, purpose, intro));
         }
     };
 }

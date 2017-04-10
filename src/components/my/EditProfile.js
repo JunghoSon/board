@@ -1,11 +1,12 @@
 import React, { Component } from 'react';
+import { browserHistory } from 'react-router';
 
 class EditProfile extends Component {
     constructor(props){
         super(props);
         
         this.state = {
-            gender: '',
+            gender: 'male',
             age_y: '',
             age_m: '',
             age_d: '',
@@ -24,52 +25,46 @@ class EditProfile extends Component {
     }
     
     componentDidMount(){
-        this.setState({
-            gender: this.props.profile.gender,
-            age_y: this.props.profile.age_y,
-            age_m: this.props.profile.age_m,
-            age_d: this.props.profile.age_d,
-            nationality: this.props.profile.nationality,
-            live_nationality: this.props.profile.live_nationality,
-            live_city: this.props.profile.live_city,
-            lang1: this.props.profile.lang1,
-            lang2: this.props.profile.lang2,
-            lang3: this.props.profile.lang3, 
-            job: this.props.profile.job,
-            purpose: this.props.profile.purpose,
-            intro: this.props.profile.intro
-        });
-    }
-    
-    componentWillReceiveProps(nextProps){
-        //if(nextProps.checkToken.status === 'SUCCESS'){
-        if(nextProps.checkToken.id !== this.props.checkToken.id){
-            this.props.memberProfileRequest(nextProps.checkToken.id)
-                .then(() => {
-                    if(this.props.profile.status === 'SUCCESS'){
-                        this.setState({
-                            gender: this.props.profile.gender,
-                            age_y: this.props.profile.age_y,
-                            age_m: this.props.profile.age_m,
-                            age_d: this.props.profile.age_d,
-                            nationality: this.props.profile.nationality,
-                            live_nationality: this.props.profile.live_nationality,
-                            live_city: this.props.profile.live_city,
-                            lang1: this.props.profile.lang1,
-                            lang2: this.props.profile.lang2,
-                            lang3: this.props.profile.lang3, 
-                            job: this.props.profile.job,
-                            purpose: this.props.profile.purpose,
-                            intro: this.props.profile.intro
-                        });
-                    }
-                });
+        let token = localStorage.getItem('tokenHeyf');
+        
+        if( token !== null){
+            //token 유효성 체크
+            this.checkProfile(token);
+        }else{
+            alert('로그인 후 이용 가능한 서비스 입니다.');
+            
+            browserHistory.push('/member/login');
+            
+            this.render = () => {
+                return false;
+            }
         }
     }
     
-    // shouldComponentUpdate(){
-    //     
-    // }
+    checkProfile(token){
+        this.props.memberProfileRequest(token)
+            .then(() => {
+                if(this.props.profile.status === 'SUCCESS'){
+                    this.setState({
+                        gender: this.props.profile.gender,
+                        age_y: this.props.profile.age_y,
+                        age_m: this.props.profile.age_m,
+                        age_d: this.props.profile.age_d,
+                        nationality: this.props.profile.nationality,
+                        live_nationality: this.props.profile.live_nationality,
+                        live_city: this.props.profile.live_city,
+                        lang1: this.props.profile.lang1,
+                        lang2: this.props.profile.lang2,
+                        lang3: this.props.profile.lang3, 
+                        job: this.props.profile.job,
+                        purpose: this.props.profile.purpose,
+                        intro: this.props.profile.intro
+                    });
+                }else{
+                    
+                }
+            });
+    }
     
     handleChange(e){
         let { name, value } = e.target;
@@ -80,12 +75,21 @@ class EditProfile extends Component {
     }
     
     handleModify(){
-        let { gender, age_y, age_m, age_d, nationality, live_nationality, live_city, lang1, lang2, lang3, job, purpose, intro } = this.state;
+        let token = localStorage.getItem('tokenHeyf');
         
-        this.props.memberProfileModifyRequest(this.props.checkToken.id, gender, age_y, age_m, age_d, nationality, live_nationality, live_city, lang1, lang2, lang3, job, purpose, intro)
-            .then(() => {
-                
-            });
+        if( token !== null){
+            //token 유효성 체크
+            let { gender, age_y, age_m, age_d, nationality, live_nationality, live_city, lang1, lang2, lang3, job, purpose, intro } = this.state;
+            
+            this.props.memberProfileModifyRequest(token, gender, age_y, age_m, age_d, nationality, live_nationality, live_city, lang1, lang2, lang3, job, purpose, intro)
+                .then(() => {
+                    
+                });
+        }else{
+            alert('로그인 후 이용 가능한 서비스 입니다.');
+            
+            browserHistory.push('/member/login');
+        }
     }
     
     render(){
@@ -100,11 +104,11 @@ class EditProfile extends Component {
                                 <li>
                                     <span className="tit">GENDER</span>
                                     <span>
-                                        <input type="radio" name="gender" id="male" value="male" onChange={this.handleChange}/>
+                                        <input type="radio" name="gender" id="male" value="male" checked={this.state.gender === 'male'} onChange={this.handleChange}/>
                                         <label htmlFor="male">MALE</label>
                                     </span>
                                     <span>
-                                        <input type="radio" name="gender" id="female" value="female" onChange={this.handleChange}/>
+                                        <input type="radio" name="gender" id="female" value="female" checked={this.state.gender === 'female'} onChange={this.handleChange}/>
                                         <label htmlFor="female">FEMALE</label>
                                     </span>
                                 </li>
