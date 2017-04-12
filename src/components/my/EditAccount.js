@@ -139,7 +139,7 @@ class EditAccount extends Component {
             return Promise.resolve(false);
         }
         
-        if(email !== this.props.checkToken.email){
+        if(email !== this.props.account.email){
             return this.props.memberCheckEmailRequest(email)
                        .then(() => {
                            let status = (this.props.checkEmail.status === 'SUCCESS') ? 9 : 7;

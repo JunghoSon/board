@@ -218,14 +218,12 @@ class EditProfile extends Component {
 }
 
 EditProfile.propTypes = {
-    checkToken: React.PropTypes.object,
     profile: React.PropTypes.object,
     memberProfileRequest: React.PropTypes.func,
     memberProfileModifyRequest: React.PropTypes.func
 };
 
 EditProfile.defaultProps = {
-    checkToken: {},
     profile: {},
     memberProfileRequest: () => {},
     memberProfileModifyRequest: () => {},
