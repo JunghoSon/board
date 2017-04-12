@@ -14,6 +14,9 @@ import {
     MEMBER_CHECKTOKEN,
     MEMBER_CHECKTOKEN_SUCCESS,
     MEMBER_CHECKTOKEN_FAILURE,
+    MEMBER_ACCOUNT,
+    MEMBER_ACCOUNT_SUCCESS,
+    MEMBER_ACCOUNT_FAILURE,
     MEMBER_MODIFY,
     MEMBER_MODIFY_SUCCESS,
     MEMBER_MODIFY_FAILURE,
@@ -195,6 +198,43 @@ export function memberRegisterSuccess(data){
 export function memberRegisterFailure(error){
     return {
         type: MEMBER_REGISTER_FAILURE,
+        error: error
+    };
+}
+
+export function memberAccountRequest(token){
+    return (dispatch) => {
+        dispatch(memberAccount());
+
+        let instance = axios.create();
+        instance.defaults.headers.common['x-access-token'] = token;
+
+        return instance.get('/api/member/account')
+                    .then((response) => {
+                        dispatch(memberAccountSuccess(response.data));
+                    })
+                    .catch((error) => {
+                        dispatch(memberAccountFailure(error.response.data));
+                    });
+    };
+}
+
+export function memberAccount(){
+    return {
+        type: MEMBER_ACCOUNT
+    };
+}
+
+export function memberAccountSuccess(data){
+    return {
+        type: MEMBER_ACCOUNT_SUCCESS,
+        data: data
+    };
+}
+
+export function memberAccountFailure(error){
+    return {
+        type: MEMBER_ACCOUNT_FAILURE,
         error: error
     };
 }

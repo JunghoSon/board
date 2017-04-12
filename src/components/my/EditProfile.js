@@ -24,24 +24,22 @@ class EditProfile extends Component {
         this.handleModify = this.handleModify.bind(this);
     }
     
-    componentDidMount(){
+    componentWillMount(){
         let token = localStorage.getItem('tokenHeyf');
         
         if( token !== null){
             //token 유효성 체크
-            this.checkProfile(token);
+            this.getProfile(token);
         }else{
             alert('로그인 후 이용 가능한 서비스 입니다.');
-            
             browserHistory.push('/member/login');
-            
             this.render = () => {
                 return false;
             }
         }
     }
     
-    checkProfile(token){
+    getProfile(token){
         this.props.memberProfileRequest(token)
             .then(() => {
                 if(this.props.profile.status === 'SUCCESS'){
@@ -61,7 +59,7 @@ class EditProfile extends Component {
                         intro: this.props.profile.intro
                     });
                 }else{
-                    
+                    //유효하지 않은 토큰
                 }
             });
     }

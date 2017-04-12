@@ -1,10 +1,14 @@
 import React, { Component } from 'react';
-import { Lnb } from 'components';
+import { UserInfo, Lnb } from 'components';
 
 class Aside extends Component {
+    shouldComponentUpdate(nextProps, nextState){
+        return JSON.stringify(nextProps) !== JSON.stringify(this.props);
+    }
+    
     render(){
         let userInfo = (
-            <p className="user_info">{ this.props.userInfo.id }님 환영 합니다!!!</p>
+            <UserInfo userId={ this.props.userInfo.id }/>
         );
         
         return (
@@ -18,7 +22,7 @@ class Aside extends Component {
 }
 
 Aside.propTypes = {
-    userInfo: React.PropTypes.object,
+    userId: React.PropTypes.object,
     pageName: React.PropTypes.string
 };
 

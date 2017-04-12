@@ -10,7 +10,8 @@ class List extends Component {
             })
             .catch((err) => {
                 //do failure
-                browserHistory.push('/err');
+                console.log(err);
+                //browserHistory.push('/err');
             });
     }
 

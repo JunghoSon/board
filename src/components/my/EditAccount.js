@@ -25,29 +25,28 @@ class EditAccount extends Component {
         this.handleModify = this.handleModify.bind(this);
     }
     
-    componentDidMount(){
-        this.setState({
-            id: this.props.checkToken.id,
-            email: this.props.checkToken.email
-        });
-    }
-    
-    componentWillReceiveProps(nextProps){
-        if(this.props.checkToken.status !== nextProps.checkToken.status){
-            // this.setState({
-            //     id: nextProps.checkToken.id,
-            //     email: nextProps.checkToken.email
-            // });
+    componentWillMount(){
+        let token = localStorage.getItem('tokenHeyf');
+        
+        if( token !== null){
+            //token 유효성 체크
+            this.getUserInfo(token);
+        }else{
+            alert('로그인 후 이용 가능한 서비스 입니다.');
+            browserHistory.push('/member/login');
+            this.render = () => {
+                return false;
+            }
         }
     }
     
-    checkLoggedIn(token){
-        this.props.memberCheckTokenRequest(token)
+    getUserInfo(token){
+        this.props.memberAccountRequest(token)
             .then(() => {
-                if(this.props.checkToken.status === 'SUCCESS'){
+                if(this.props.account.status === 'SUCCESS'){
                     this.setState({
-                        id: this.props.checkToken.id,
-                        email: this.props.checkToken.email
+                        id: this.props.account.id,
+                        email: this.props.account.email
                     });
                 }else{
                     alert('세션이 종료 되었습니다. 다시 로그인 해 주세요.');
@@ -181,8 +180,7 @@ class EditAccount extends Component {
                                         checkStatusPasswordConfirm: 0,
                                         checkStatusEmail: 0
                                     });
-                                    localStorage.setItem('tokenHeyf', this.props.modify.token);
-                                    this.checkLoggedIn(this.props.modify.token);
+                                    this.getUserInfo(token);
                                     //browserHistory.push('/member/login');
                                 }else{
                                     alert(this.props.modify.error);
@@ -192,10 +190,6 @@ class EditAccount extends Component {
                         alert('로그인 후 이용 가능한 서비스 입니다.');
                         
                         browserHistory.push('/member/login');
-                        
-                        this.render = () => {
-                            return false;
-                        }
                     }
                 }
             });
@@ -266,19 +260,19 @@ class EditAccount extends Component {
 }
 
 EditAccount.propTypes = {
-    checkToken: React.PropTypes.object,
+    account: React.PropTypes.object, 
     modify: React.PropTypes.object,
     checkEmail: React.PropTypes.object,
-    memberCheckTokenRequest: React.PropTypes.func,
+    memberAccountRequest: React.PropTypes.func,
     memberCheckEmailRequest: React.PropTypes.func,
     memberModifyRequest: React.PropTypes.func
 };
 
 EditAccount.defaultProps = {
-    checkToken: {},
+    account: {},
     checkEmail: {},
     modify: {},
-    memberCheckTokenRequest: () => {},
+    memberAccountRequest: () => {},
     memberCheckEmailRequest: () => {},
     memberModifyRequest: () => {}
 };

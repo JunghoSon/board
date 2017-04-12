@@ -1,6 +1,7 @@
 import Header from './common/Header';
 import Gnb from './common/Gnb';
 import Aside from './common/Aside';
+import UserInfo from './common/UserInfo';
 import Lnb from './common/Lnb';
 
 import Login from './member/Login';
@@ -24,6 +25,7 @@ export {
     Header,
     Gnb,
     Aside,
+    UserInfo,
     Lnb,
     List,
     Tbl,

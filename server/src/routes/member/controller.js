@@ -88,8 +88,7 @@ exports.login = (req, res) => {
                     jwt.sign(
                         {
                             _id: member._id,
-                            id: member.id,
-                            email: member.email
+                            id: member.id
                         },
                         secret,
                         {
@@ -128,6 +127,27 @@ exports.login = (req, res) => {
           .catch(onError);
 };
 
+exports.account = (req, res) => {
+    const { id } = req.decoded;
+    
+    const respond = (member) => {
+        res.json({
+            id: member.id,
+            email: member.email
+        });
+    };
+    
+    const onError = (error) => {
+        return res.status(403).json({
+            message: error.message
+        });
+    };
+    
+    Member.findOneById(id)
+          .then(respond)
+          .catch(onError);
+};
+
 exports.modify = (req, res) => {
     const { id } = req.decoded;
     const { password_old, password, email } = req.body;
@@ -145,33 +165,9 @@ exports.modify = (req, res) => {
         }
     };
     
-    const issue = (member) => {
-        const p = new Promise((resolve, reject) => {
-            jwt.sign(
-                {
-                    _id: member._id,
-                    id: member.id,
-                    email: member.email
-                },
-                secret,
-                {
-                    expiresIn: '1d',
-                    issuer: 'heyfriend.com',
-                    subject: 'userInfo'
-                }, (error, token) => {
-                    if(error) reject(error);
-                    resolve(token);
-                }
-            );
-        });
-
-        return p;
-    };
-    
-    const respond = (token) => {
+    const respond = () => {
         res.json({
-            message: '성공적으로 회원정보를 변경 했습니다.',
-            token
+            message: '성공적으로 회원정보를 변경 했습니다.'
         });
     }
     
@@ -183,7 +179,6 @@ exports.modify = (req, res) => {
     
     Member.findOneById(id)
           .then(modify)
-          .then(issue)
           .then(respond)
           .catch(onError);
 };

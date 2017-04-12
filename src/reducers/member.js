@@ -17,17 +17,21 @@ const initialState = {
     },
     checkEmail: {
         status: '',
-        error: {}
+        error: ''
     },
     checkToken: {
         status: '',
         id: '',
+        error: ''
+    },
+    account: {
+        status: '',
+        id: '',
         email: '',
-        error: {}
+        error: ''
     },
     modify: {
         status: '',
-        token:'',
         error: ''
     },
     profile: {
@@ -139,12 +143,32 @@ export default function member(state = initialState, action){
                 checkToken: {
                     status: {$set: 'SUCCESS'},
                     id: {$set: action.data.userInfo.id},
-                    email: {$set: action.data.userInfo.email}
                 }
             });
         case types.MEMBER_CHECKTOKEN_FAILURE:
             return update(state, {
                 checkToken: {
+                    status: {$set: 'FAILURE'},
+                    error: {$set: action.error.message}
+                }
+            });
+        case types.MEMBER_ACCOUNT:
+            return update(state, {
+                account: {
+                    status : {$set: 'WAITING'}
+                }
+            });
+        case types.MEMBER_ACCOUNT_SUCCESS:
+            return update(state, {
+                account: {
+                    status: {$set: 'SUCCESS'},
+                    id: {$set: action.data.id},
+                    email: {$set: action.data.email}
+                }
+            });
+        case types.MEMBER_ACCOUNT_FAILURE:
+            return update(state, {
+                account: {
                     status: {$set: 'FAILURE'},
                     error: {$set: action.error.message}
                 }
@@ -158,8 +182,7 @@ export default function member(state = initialState, action){
         case types.MEMBER_MODIFY_SUCCESS:
             return update(state, {
                 modify: {
-                    status: {$set: 'SUCCESS'},
-                    token: {$set: action.data.token}
+                    status: {$set: 'SUCCESS'}
                 }
             });
         case types.MEMBER_MODIFY_FAILURE:

@@ -2,7 +2,7 @@ import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import { Link, browserHistory } from 'react-router';
 import { Aside } from 'components';
-import { memberCheckTokenRequest, memberCheckEmailRequest, memberModifyRequest, memberProfileRequest, memberProfileModifyRequest } from 'actions/member';
+import { memberCheckTokenRequest, memberCheckEmailRequest, memberAccountRequest, memberModifyRequest, memberProfileRequest, memberProfileModifyRequest } from 'actions/member';
 
 class My extends Component {
     constructor(props){
@@ -41,7 +41,7 @@ class My extends Component {
     }
     
     render(){
-        const { checkToken, checkEmail, modify, profile, memberCheckTokenRequest, memberCheckEmailRequest, memberModifyRequest, memberProfileRequest, memberProfileModifyRequest } = this.props;
+        const { checkToken, account, checkEmail, modify, profile, memberCheckTokenRequest, memberAccountRequest, memberCheckEmailRequest, memberModifyRequest, memberProfileRequest, memberProfileModifyRequest } = this.props;
         
         return (
             <div>
@@ -49,7 +49,7 @@ class My extends Component {
                 <div className="wrp_content">
                     <Aside pageName={this.state.pageName} userInfo={ checkToken }/>
                     <div className="content">
-                        {React.cloneElement(this.props.children, { checkToken, checkEmail, modify, profile, memberCheckTokenRequest, memberCheckEmailRequest, memberModifyRequest, memberProfileRequest, memberProfileModifyRequest })}
+                        {React.cloneElement(this.props.children, { checkToken, account, checkEmail, modify, profile, memberCheckTokenRequest, memberAccountRequest, memberCheckEmailRequest, memberModifyRequest, memberProfileRequest, memberProfileModifyRequest })}
                     </div>
                 </div>
             </div>
@@ -61,6 +61,7 @@ const mapStateToProps = (state) => {
     return {
         checkToken: state.member.checkToken,
         checkEmail: state.member.checkEmail,
+        account: state.member.account,
         modify: state.member.modify,
         profile: state.member.profile
     };
@@ -73,6 +74,9 @@ const mapDispatchToProps = (dispatch) => {
         },
         memberCheckEmailRequest: (email) => {
             return dispatch(memberCheckEmailRequest(email));
+        },
+        memberAccountRequest: (token) => {
+            return dispatch(memberAccountRequest(token));
         },
         memberModifyRequest: (token, password_old, password, email) => {
             return dispatch(memberModifyRequest(token, password_old, password, email));

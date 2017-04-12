@@ -13,6 +13,9 @@ router.post('/checkEmail', controller.checkEmail);
 router.use('/checkToken', authMiddleware);
 router.get('/checkToken', controller.checkToken);
 
+router.use('/account', authMiddleware);
+router.get('/account', controller.account);
+
 router.post('/login', controller.login);
 
 router.use('/modify', authMiddleware);

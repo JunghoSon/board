@@ -2,6 +2,10 @@ import React, { Component } from 'react';
 import { Link } from 'react-router';
 
 class Lnb extends Component {
+    shouldComponentUpdate(nextProps, nextState){
+        return this.props.pageName !== nextProps.pageName;
+    }
+    
     render(){
         let real = (
             <p>real time talk lnb 준비중..</p>
