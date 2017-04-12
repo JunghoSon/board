@@ -6,7 +6,7 @@ class EditProfile extends Component {
         super(props);
         
         this.state = {
-            gender: 'male',
+            gender: '',
             age_y: '',
             age_m: '',
             age_d: '',

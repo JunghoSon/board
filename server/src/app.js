@@ -13,7 +13,9 @@ const port = 8080;
 app.use(morgan('dev'));
 app.use(bodyParser.json());
 
-app.set('jwt-secret', config.secret);
+app.set('jwt-password-secret', config.password_secret);
+app.set('jwt-activate-secret', config.activate_secret);
+app.set('jwt-token-secret', config.token_secret);
 
 const db = mongoose.connection;
 db.on('error', console.error);

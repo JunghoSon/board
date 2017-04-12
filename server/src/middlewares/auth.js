@@ -10,7 +10,7 @@ const authMiddleware = (req, res, next) => {
     }
     
     const p = new Promise((resolve, reject) => {
-        jwt.verify(token, req.app.get('jwt-secret'), (error, decoded) => {
+        jwt.verify(token, req.app.get('jwt-token-secret'), (error, decoded) => {
             if(error) reject(error);
             resolve(decoded);
         });

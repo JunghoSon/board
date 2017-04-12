@@ -77,7 +77,7 @@ exports.checkToken = (req, res) => {
 
 exports.login = (req, res) => {
     const { id, password } = req.body;
-    const secret = req.app.get('jwt-secret');
+    const secret = req.app.get('jwt-token-secret');
 
     const verify = (member) => {
         if(!member){
@@ -151,7 +151,7 @@ exports.account = (req, res) => {
 exports.modify = (req, res) => {
     const { id } = req.decoded;
     const { password_old, password, email } = req.body;
-    const secret = req.app.get('jwt-secret');
+    const secret = req.app.get('jwt-token-secret');
     
     const modify = (member) => {
         if(!member){

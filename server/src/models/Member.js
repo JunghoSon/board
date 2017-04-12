@@ -28,7 +28,7 @@ const Member = new Schema({
 });
 
 Member.statics.create = function(id, password, email){
-    const encrypted = crypto.createHmac('sha1', config.secret)
+    const encrypted = crypto.createHmac('sha1', config.password_secret)
                             .update(password)
                             .digest('base64');
 
@@ -54,7 +54,7 @@ Member.statics.findOneByEmail = function(email){
 };
 
 Member.methods.verify = function(password){
-    const encrypted = crypto.createHmac('sha1', config.secret)
+    const encrypted = crypto.createHmac('sha1', config.password_secret)
                             .update(password)
                             .digest('base64');
                             
@@ -62,7 +62,7 @@ Member.methods.verify = function(password){
 };
 
 Member.methods.modify = function(password, email){
-    const encrypted = crypto.createHmac('sha1', config.secret)
+    const encrypted = crypto.createHmac('sha1', config.password_secret)
                             .update(password)
                             .digest('base64');
     
@@ -72,7 +72,6 @@ Member.methods.modify = function(password, email){
 };
 
 Member.methods.profileModify = function(gender, age_y, age_m, age_d, nationality, live_nationality, live_city, lang1, lang2, lang3, job, purpose, intro){
-    console.log(intro);
     this.profile.gender = gender;
     this.profile.age_y = age_y;
     this.profile.age_m = age_m;
